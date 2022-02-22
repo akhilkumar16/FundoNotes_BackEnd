@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "p7N5OJOjmW6Nhhy6UwDrxGOGnrNdt50UMTiuE1bWhH0qIhtXMv5Li3rd4bhbbrSVfz1FErCM7ij29H5MS6Qfig==",
+  "dgSpecHash": "lNGa67owuxdMCDwRFz2US1gXGgskdDBf45OHzOl3YTUjrJWNpDdNftamTNcVlbO7MIpfjyiB5H450xud+MEBkw==",
   "success": true,
   "projectFilePath": "D:\\Bridgelabz\\CFP\\FundoNotes\\Fundonotes\\Fundonotes.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\priya\\.nuget\\packages\\ikvm\\8.1.5717\\ikvm.8.1.5717.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.0\\microsoft.bcl.asyncinterfaces.1.1.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\microsoft.bcl.hashcode\\1.1.0\\microsoft.bcl.hashcode.1.1.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
@@ -28,7 +29,6 @@
     "C:\\Users\\priya\\.nuget\\packages\\microsoft.identity.client\\3.0.8\\microsoft.identity.client.3.0.8.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\microsoft.netcore.platforms\\2.0.0\\microsoft.netcore.platforms.2.0.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
-    "C:\\Users\\priya\\.nuget\\packages\\microsoft.web.services3\\3.0.0\\microsoft.web.services3.3.0.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\microsoft.win32.registry\\4.5.0\\microsoft.win32.registry.4.5.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\runtime.native.system\\4.3.0\\runtime.native.system.4.3.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
@@ -98,8 +98,8 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'Microsoft.Web.Services3 3.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
-      "libraryId": "Microsoft.Web.Services3",
+      "message": "Package 'IKVM 8.1.5717' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "IKVM",
       "targetGraphs": [
         ".NETCoreApp,Version=v3.1"
       ]

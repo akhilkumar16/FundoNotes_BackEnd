@@ -1,3 +1,5 @@
+using BusinessLayer.interfaces;
+using BusinessLayer.services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RepositoryLayer.context;
+using RepositoryLayer.interfaces;
+using RepositoryLayer.services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,9 +34,9 @@ namespace Fundonotes
             {
                 services.AddDbContext<FundoContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:FundoDB"]));
                 services.AddControllers();
-
+                services.AddTransient<IUserBL, UserBL>();
+                services.AddTransient<IUserRL, UserRL>();
             }
-            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

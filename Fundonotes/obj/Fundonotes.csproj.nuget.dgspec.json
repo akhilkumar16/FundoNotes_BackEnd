@@ -97,6 +97,12 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "IKVM": {
+              "target": "Package",
+              "version": "[8.1.5717, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -239,10 +245,6 @@
               "target": "Package",
               "version": "[3.1.0, )"
             },
-            "Microsoft.EntityFrameworkCore.Relational": {
-              "target": "Package",
-              "version": "[3.1.0, )"
-            },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[3.1.0, )"
@@ -252,10 +254,6 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[3.1.0, )"
-            },
-            "Microsoft.Web.Services3": {
-              "target": "Package",
-              "version": "[3.0.0, )"
             }
           },
           "imports": [
