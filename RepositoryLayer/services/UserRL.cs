@@ -4,6 +4,7 @@ using RepositoryLayer.entities;
 using RepositoryLayer.interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace RepositoryLayer.services
@@ -15,6 +16,11 @@ namespace RepositoryLayer.services
         {
             this.fundoContext = fundoContext;
         }
+        /// <summary>
+        /// Registration
+        /// </summary>
+        /// <param name="userRegmodel"></param>
+        /// <returns></returns>
         public User Registration(UserRegmodel userRegmodel)
         {
             try
@@ -38,6 +44,21 @@ namespace RepositoryLayer.services
 
                 throw;
             }
+        }
+        /// <summary>
+        /// Login
+        /// </summary>
+        /// <param name="userLogin"></param>
+        /// <returns></returns>
+        public string Login(UserLoginmodel userLogin)
+        {
+            var LoginResult = this.fundoContext.UserTables.Where(X => X.Email == userLogin.Email && X.Password == userLogin.Password).FirstOrDefault();
+            if (LoginResult != null)
+            {
+                return LoginResult.Email;
+            }
+            else
+                return null;
         }
     }
 }

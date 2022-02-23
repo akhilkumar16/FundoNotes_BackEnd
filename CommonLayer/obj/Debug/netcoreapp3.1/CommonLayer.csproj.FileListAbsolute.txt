@@ -7,3 +7,4 @@ D:\Bridgelabz\CFP\FundoNotes\CommonLayer\obj\Debug\netcoreapp3.1\CommonLayer.Ass
 D:\Bridgelabz\CFP\FundoNotes\CommonLayer\obj\Debug\netcoreapp3.1\CommonLayer.csproj.CoreCompileInputs.cache
 D:\Bridgelabz\CFP\FundoNotes\CommonLayer\obj\Debug\netcoreapp3.1\CommonLayer.dll
 D:\Bridgelabz\CFP\FundoNotes\CommonLayer\obj\Debug\netcoreapp3.1\CommonLayer.pdb
+D:\Bridgelabz\CFP\FundoNotes\CommonLayer\obj\Debug\netcoreapp3.1\CommonLayer.csproj.AssemblyReference.cache

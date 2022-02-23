@@ -37,5 +37,24 @@ namespace Fundonotes.Controllers
                 throw;
             }
         }
+        [HttpPost("Login")]
+        public IActionResult Login(UserLoginmodel userLoginmodel)
+        {
+            try
+            {
+                var result = userBL.Login(userLoginmodel);
+                if (result != null)
+                {
+                    return this.Ok(new { success = true, message = "Login Successful", data = result });
+                }
+                else
+                    return this.BadRequest(new { success = false, message = "Login Unsuccessful" });
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
