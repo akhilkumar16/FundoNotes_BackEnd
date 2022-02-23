@@ -74,3 +74,11 @@ D:\Bridgelabz\CFP\FundoNotes\Fundonotes\obj\Debug\netcoreapp3.1\Fundonotes.cspro
 D:\Bridgelabz\CFP\FundoNotes\Fundonotes\obj\Debug\netcoreapp3.1\Fundonotes.dll
 D:\Bridgelabz\CFP\FundoNotes\Fundonotes\obj\Debug\netcoreapp3.1\Fundonotes.pdb
 D:\Bridgelabz\CFP\FundoNotes\Fundonotes\obj\Debug\netcoreapp3.1\Fundonotes.genruntimeconfig.cache
+D:\Bridgelabz\CFP\FundoNotes\Fundonotes\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\Bridgelabz\CFP\FundoNotes\Fundonotes\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Bridgelabz\CFP\FundoNotes\Fundonotes\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
+D:\Bridgelabz\CFP\FundoNotes\Fundonotes\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
+D:\Bridgelabz\CFP\FundoNotes\Fundonotes\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\Bridgelabz\CFP\FundoNotes\Fundonotes\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
+D:\Bridgelabz\CFP\FundoNotes\Fundonotes\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+D:\Bridgelabz\CFP\FundoNotes\Fundonotes\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll

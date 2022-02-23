@@ -1,5 +1,6 @@
 using BusinessLayer.interfaces;
 using BusinessLayer.services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,12 +10,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.context;
 using RepositoryLayer.interfaces;
 using RepositoryLayer.services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Fundonotes
@@ -34,6 +37,22 @@ namespace Fundonotes
             {
                 services.AddDbContext<FundoContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:FundoDB"]));
                 services.AddControllers();
+                services.AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+            .AddJwtBearer(x =>
+            {
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidIssuer = "localhost",
+                    ValidAudience = "localhost"
+                };
+            });
                 services.AddTransient<IUserBL, UserBL>();
                 services.AddTransient<IUserRL, UserRL>();
             }

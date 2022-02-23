@@ -27,20 +27,20 @@ namespace BusinessLayer.services
             }
         }
 
-        string IUserBL.Login(UserLoginmodel userLogin)
-        {
-            try
-            {
-                return userRL.Login(userLogin);
-            }
-            catch (Exception)
-            {
+        //public string IUserBL.Login(UserLoginmodel userLogin)
+        //{
+        //    try
+        //    {
+        //        return userRL.Login(userLogin);
+        //    }
+        //    catch (Exception)
+        //    {
 
-                throw;
-            }
-        }
+        //        throw;
+        //    }
+        //}
 
-        LoginDataModel IUserBL.UserLogin(LoginDataModel user)
+         LoginResponseModel IUserBL.UserLogin(UserLoginmodel user)
         {
             try
             {

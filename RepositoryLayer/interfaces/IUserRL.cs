@@ -19,13 +19,13 @@ namespace RepositoryLayer.interfaces
         /// </summary>
         /// <param name="userLogin"></param>
         /// <returns></returns>
-        public string Login(UserLoginmodel userLogin);
+        //public string Login(UserLoginmodel userLogin);
         /// <summary>
         /// UserLogin for All login details
         /// </summary>
         /// <param name="user1"></param>
         /// <returns></returns>
-        public LoginDataModel UserLogin(LoginDataModel info);
+        public LoginResponseModel UserLogin(UserLoginmodel info);
 
     }
 }

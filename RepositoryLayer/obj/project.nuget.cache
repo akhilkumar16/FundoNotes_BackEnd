@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "NuIywrT1GLI6w6TfeEBnSA4XMziXTml+N02Vjy+n2FFIVnAAyT7Zl0qg2IgtR1Jbfcxm1eTUSJV0Riev5KRYxw==",
+  "dgSpecHash": "rVGL05K/WZa68brFjr4D+q1c9cVa61weM1HbpL4dmgu5h6+mzWFxtUfrhQoD/6hp6lbQQRX8OxaXzuKt267AUg==",
   "success": true,
   "projectFilePath": "D:\\Bridgelabz\\CFP\\FundoNotes\\RepositoryLayer\\RepositoryLayer.csproj",
   "expectedPackageFiles": [
@@ -28,6 +28,9 @@
     "C:\\Users\\priya\\.nuget\\packages\\microsoft.extensions.options\\3.1.0\\microsoft.extensions.options.3.1.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\microsoft.extensions.primitives\\3.1.0\\microsoft.extensions.primitives.3.1.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\microsoft.identity.client\\3.0.8\\microsoft.identity.client.3.0.8.nupkg.sha512",
+    "C:\\Users\\priya\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\6.16.0\\microsoft.identitymodel.jsonwebtokens.6.16.0.nupkg.sha512",
+    "C:\\Users\\priya\\.nuget\\packages\\microsoft.identitymodel.logging\\6.16.0\\microsoft.identitymodel.logging.6.16.0.nupkg.sha512",
+    "C:\\Users\\priya\\.nuget\\packages\\microsoft.identitymodel.tokens\\6.16.0\\microsoft.identitymodel.tokens.6.16.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\microsoft.netcore.platforms\\2.0.0\\microsoft.netcore.platforms.2.0.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\microsoft.win32.registry\\4.5.0\\microsoft.win32.registry.4.5.0.nupkg.sha512",
@@ -52,6 +55,7 @@
     "C:\\Users\\priya\\.nuget\\packages\\system.diagnostics.tracing\\4.3.0\\system.diagnostics.tracing.4.3.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\system.globalization\\4.3.0\\system.globalization.4.3.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\system.globalization.extensions\\4.3.0\\system.globalization.extensions.4.3.0.nupkg.sha512",
+    "C:\\Users\\priya\\.nuget\\packages\\system.identitymodel.tokens.jwt\\6.16.0\\system.identitymodel.tokens.jwt.6.16.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\system.io\\4.3.0\\system.io.4.3.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\system.io.filesystem\\4.3.0\\system.io.filesystem.4.3.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\system.io.filesystem.primitives\\4.3.0\\system.io.filesystem.primitives.4.3.0.nupkg.sha512",
@@ -77,6 +81,7 @@
     "C:\\Users\\priya\\.nuget\\packages\\system.runtime.serialization.json\\4.3.0\\system.runtime.serialization.json.4.3.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\system.runtime.serialization.primitives\\4.3.0\\system.runtime.serialization.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\system.security.accesscontrol\\4.5.0\\system.security.accesscontrol.4.5.0.nupkg.sha512",
+    "C:\\Users\\priya\\.nuget\\packages\\system.security.cryptography.cng\\4.5.0\\system.security.cryptography.cng.4.5.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\system.security.cryptography.primitives\\4.3.0\\system.security.cryptography.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\system.security.cryptography.protecteddata\\4.5.0\\system.security.cryptography.protecteddata.4.5.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\system.security.permissions\\4.5.0\\system.security.permissions.4.5.0.nupkg.sha512",
