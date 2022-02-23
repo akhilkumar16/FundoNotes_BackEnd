@@ -10,6 +10,7 @@ namespace BusinessLayer.interfaces
     {
         public User Registration(UserRegmodel userRegmodel);
         public string Login(UserLoginmodel userLogin);
+        public LoginDataModel UserLogin(LoginDataModel info);
 
     }
 }

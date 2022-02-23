@@ -39,5 +39,18 @@ namespace BusinessLayer.services
                 throw;
             }
         }
+
+        LoginDataModel IUserBL.UserLogin(LoginDataModel user)
+        {
+            try
+            {
+                return userRL.UserLogin(user);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

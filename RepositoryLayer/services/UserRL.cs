@@ -60,5 +60,35 @@ namespace RepositoryLayer.services
             else
                 return null;
         }
+        /// <summary>
+        /// All Registerd Login Data
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public LoginDataModel UserLogin(LoginDataModel info)
+        {
+            try
+            {
+                var Enteredlogin = this.fundoContext.UserTables.Where(X => X.Email == info.Email && X.Password == info.Password).FirstOrDefault();
+                if (Enteredlogin !=null)
+                {
+                    LoginDataModel data = new LoginDataModel();
+                    data.Id = Enteredlogin.Id;
+                    data.FirstName = Enteredlogin.FristName;
+                    data.LastName = Enteredlogin.LastName;
+                    data.Email = Enteredlogin.Email;
+                    data.Password = Enteredlogin.Password;
+                    return data;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
