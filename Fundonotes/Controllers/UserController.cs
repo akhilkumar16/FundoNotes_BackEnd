@@ -56,7 +56,7 @@ namespace Fundonotes.Controllers
         //        throw;
         //    }
         //}
-        [HttpPost("AllLogin")]
+        [HttpPost("Login")]
         public IActionResult UserLogin(UserLoginmodel logindata)
         {
             try
