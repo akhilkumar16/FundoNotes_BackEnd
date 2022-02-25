@@ -102,9 +102,9 @@
               "target": "Package",
               "version": "[1.1.0, )"
             },
-            "IKVM": {
+            "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
-              "version": "[8.1.5717, )"
+              "version": "[6.16.0, )"
             }
           },
           "imports": [

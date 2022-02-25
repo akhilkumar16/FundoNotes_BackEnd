@@ -9,7 +9,7 @@
       "CommonLayer/1.0.0": {
         "dependencies": {
           "Experimental.System.Messaging": "1.1.0",
-          "IKVM": "8.1.5717"
+          "System.IdentityModel.Tokens.Jwt": "6.16.0"
         },
         "runtime": {
           "CommonLayer.dll": {}
@@ -23,122 +23,52 @@
           }
         }
       },
-      "IKVM/8.1.5717": {
+      "Microsoft.CSharp/4.5.0": {},
+      "Microsoft.IdentityModel.JsonWebTokens/6.16.0": {
+        "dependencies": {
+          "Microsoft.IdentityModel.Tokens": "6.16.0"
+        },
         "runtime": {
-          "lib/IKVM.AWT.WinForms.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.Beans.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.Charsets.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.Cldrdata.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.Corba.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.Core.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.Jdbc.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.Localedata.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.Management.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.Media.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.Misc.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.Naming.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.Nashorn.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.Remoting.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.Security.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.SwingAWT.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.Text.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.Tools.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.Util.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.XML.API.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.XML.Bind.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.XML.Crypto.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.XML.Parse.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.XML.Transform.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.XML.WebServices.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.OpenJDK.XML.XPath.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.Runtime.JNI.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
-          },
-          "lib/IKVM.Runtime.dll": {
-            "assemblyVersion": "8.1.5717.0",
-            "fileVersion": "8.1.5717.0"
+          "lib/netstandard2.0/Microsoft.IdentityModel.JsonWebTokens.dll": {
+            "assemblyVersion": "6.16.0.0",
+            "fileVersion": "6.16.0.30218"
           }
         }
-      }
+      },
+      "Microsoft.IdentityModel.Logging/6.16.0": {
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.IdentityModel.Logging.dll": {
+            "assemblyVersion": "6.16.0.0",
+            "fileVersion": "6.16.0.30218"
+          }
+        }
+      },
+      "Microsoft.IdentityModel.Tokens/6.16.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.5.0",
+          "Microsoft.IdentityModel.Logging": "6.16.0",
+          "System.Security.Cryptography.Cng": "4.5.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.IdentityModel.Tokens.dll": {
+            "assemblyVersion": "6.16.0.0",
+            "fileVersion": "6.16.0.30218"
+          }
+        }
+      },
+      "System.IdentityModel.Tokens.Jwt/6.16.0": {
+        "dependencies": {
+          "Microsoft.IdentityModel.JsonWebTokens": "6.16.0",
+          "Microsoft.IdentityModel.Tokens": "6.16.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.IdentityModel.Tokens.Jwt.dll": {
+            "assemblyVersion": "6.16.0.0",
+            "fileVersion": "6.16.0.30218"
+          }
+        }
+      },
+      "System.Security.Cryptography.Cng/4.5.0": {}
     }
   },
   "libraries": {
@@ -154,12 +84,47 @@
       "path": "experimental.system.messaging/1.1.0",
       "hashPath": "experimental.system.messaging.1.1.0.nupkg.sha512"
     },
-    "IKVM/8.1.5717": {
+    "Microsoft.CSharp/4.5.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-5olx8s2XYTfu6xu59ozQi9Jz5s6IHdJTK+XEFKpPxxVHoQWphb2G78btQTu1Z69I18n0tpcJ/EK5Dg2wmHJQIA==",
-      "path": "ikvm/8.1.5717",
-      "hashPath": "ikvm.8.1.5717.nupkg.sha512"
+      "sha512": "sha512-kaj6Wb4qoMuH3HySFJhxwQfe8R/sJsNJnANrvv8WdFPMoNbKY5htfNscv+LHCu5ipz+49m2e+WQXpLXr9XYemQ==",
+      "path": "microsoft.csharp/4.5.0",
+      "hashPath": "microsoft.csharp.4.5.0.nupkg.sha512"
+    },
+    "Microsoft.IdentityModel.JsonWebTokens/6.16.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-FJtXVXvjoza64VPFOPBxqnhe0yyQ5B/7A09+RpTXIzowr5+A4xcX42patsLrNGmFUvXZAHhS2u/6ojTzhYatpg==",
+      "path": "microsoft.identitymodel.jsonwebtokens/6.16.0",
+      "hashPath": "microsoft.identitymodel.jsonwebtokens.6.16.0.nupkg.sha512"
+    },
+    "Microsoft.IdentityModel.Logging/6.16.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Fuo5SpYUpFRw90hBM3PDA1uQsrHmbIaxvwkldJcfi0O51gz/qjSFMe8136NFRoKA3NxZZScpz/47oFkRU2WA/A==",
+      "path": "microsoft.identitymodel.logging/6.16.0",
+      "hashPath": "microsoft.identitymodel.logging.6.16.0.nupkg.sha512"
+    },
+    "Microsoft.IdentityModel.Tokens/6.16.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dL7r4bdRbDG0RmyYGw9cpO/pA3GVaxV+lI1ConYuQuRiAxd1ONFlxHue1o8wR8+lEB972cekzfj45WSNaq3+xA==",
+      "path": "microsoft.identitymodel.tokens/6.16.0",
+      "hashPath": "microsoft.identitymodel.tokens.6.16.0.nupkg.sha512"
+    },
+    "System.IdentityModel.Tokens.Jwt/6.16.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-QnZUawkmLkzEhwgvlqcm2YNAoRgz27zVY+2LzMBMWMcfFhl2Sv8aavZOeuFMofmYJsST9h7BilOn7MzFSUMihQ==",
+      "path": "system.identitymodel.tokens.jwt/6.16.0",
+      "hashPath": "system.identitymodel.tokens.jwt.6.16.0.nupkg.sha512"
+    },
+    "System.Security.Cryptography.Cng/4.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-WG3r7EyjUe9CMPFSs6bty5doUqT+q9pbI80hlNzo2SkPkZ4VTuZkGWjpp77JB8+uaL4DFPRdBsAY+DX3dBK92A==",
+      "path": "system.security.cryptography.cng/4.5.0",
+      "hashPath": "system.security.cryptography.cng.4.5.0.nupkg.sha512"
     }
   }
 }

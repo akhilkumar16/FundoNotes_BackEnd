@@ -26,21 +26,7 @@ namespace BusinessLayer.services
                 throw;
             }
         }
-
-        //public string IUserBL.Login(UserLoginmodel userLogin)
-        //{
-        //    try
-        //    {
-        //        return userRL.Login(userLogin);
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
-
-         LoginResponseModel IUserBL.UserLogin(UserLoginmodel user)
+        LoginResponseModel IUserBL.UserLogin(UserLoginmodel user)
         {
             try
             {
@@ -48,9 +34,33 @@ namespace BusinessLayer.services
             }
             catch (Exception)
             {
+                throw;
+            }
+        }
+        public string ForgotPassword(string Email)
+        {
+            try
+            {
+                return userRL.ForgotPassword(Email);
+            }
+            catch (Exception)
+            {
 
                 throw;
             }
         }
+        public bool ResetPassword(String Email, string Password, String ConfirmPassword)
+        {
+            try
+            {
+                return userRL.ResetPassword(Email,Password,ConfirmPassword);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }

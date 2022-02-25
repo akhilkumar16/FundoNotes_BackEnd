@@ -53,22 +53,6 @@ namespace RepositoryLayer.services
         }
 
         /// <summary>
-        /// Login
-        /// </summary>
-        /// <param name="userLogin"></param>
-        /// <returns></returns>
-        //public string Login(UserLoginmodel userLogin)
-        //{
-        //    var LoginResult = this.fundoContext.UserTables.Where(X => X.Email == userLogin.Email && X.Password == userLogin.Password).FirstOrDefault();
-        //    if (LoginResult != null)
-        //    {
-        //        return LoginResult.Email;
-        //    }
-        //    else
-        //        return null;
-        //}
-
-        /// <summary>
         /// All Registerd Login Data
         /// </summary>
         /// <param name="info"></param>
@@ -122,6 +106,58 @@ namespace RepositoryLayer.services
               signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
 
+        }
+        /// <summary>
+        /// Password Forgot method
+        /// </summary>
+        /// <param name="Email"></param>
+        /// <returns></returns>
+        public string ForgotPassword(string Email)
+        {
+            try
+            {
+                var Enteredlogin = this.fundoContext.UserTables.Where(X => X.Email == Email).FirstOrDefault();
+                if (Enteredlogin != null)
+                {
+                    var token = GenerateSecurityToken(Email, Enteredlogin.Id);
+                    new MSMQmodel().MSMQSender(token);
+                    return token;
+                }
+                else
+                    return null;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        /// <summary>
+        /// Reset method
+        /// </summary>
+        /// <param name="Email"></param>
+        /// <param name="Password"></param>
+        /// <param name="ConfirmPassword"></param>
+        /// <returns></returns>
+        public bool ResetPassword(String Email , string Password , String ConfirmPassword)
+        {
+            try
+            {
+                if (Password.Equals(ConfirmPassword))
+                {
+                    User user = fundoContext.UserTables.Where(e => e.Email == Email).FirstOrDefault();
+                    user.Password = ConfirmPassword;
+                    fundoContext.SaveChanges();
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

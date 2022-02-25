@@ -1,11 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "pPq4VgRU7j7QGzaESiTBTIbERbmXy8vN3OIc2r0o/HMAiWC9BtG95bcNgneLF0cVibuLEb6vKJVYIMSQ8OHf7g==",
+  "dgSpecHash": "07N8CbsTJekac1vz5zuLr2ow943XBooApv1NzZ1iNx9h1PDslNlcob75rzFF5uAls0dACNcgkUeXJkMkOl2NBQ==",
   "success": true,
   "projectFilePath": "D:\\Bridgelabz\\CFP\\FundoNotes\\Fundonotes\\Fundonotes.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\priya\\.nuget\\packages\\experimental.system.messaging\\1.1.0\\experimental.system.messaging.1.1.0.nupkg.sha512",
-    "C:\\Users\\priya\\.nuget\\packages\\ikvm\\8.1.5717\\ikvm.8.1.5717.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\microsoft.aspnetcore.authentication.core\\2.2.0\\microsoft.aspnetcore.authentication.core.2.2.0.nupkg.sha512",
@@ -133,16 +132,5 @@
     "C:\\Users\\priya\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
     "C:\\Users\\priya\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1701",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'IKVM 8.1.5717' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
-      "libraryId": "IKVM",
-      "targetGraphs": [
-        ".NETCoreApp,Version=v3.1"
-      ]
-    }
-  ]
+  "logs": []
 }

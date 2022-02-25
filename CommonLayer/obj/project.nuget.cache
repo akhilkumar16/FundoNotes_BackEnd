@@ -1,22 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "asWBfyk2lZXBNjPjqdhP1KbjlmIi6EqBapwW/r1ufJX3PoTAT2zjWpqoZsX7JcEFnbVcAoO15XtXDLp99Kz4Jg==",
+  "dgSpecHash": "p+7cTtDE+yJ6aYXSZqk8OymyrYJozaZe6ZwvfuDJ1g9vrMLaarPAiGIyFIfpu3/mxBUSynmcg4LnfGq/fr+9gQ==",
   "success": true,
   "projectFilePath": "D:\\Bridgelabz\\CFP\\FundoNotes\\CommonLayer\\CommonLayer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\priya\\.nuget\\packages\\experimental.system.messaging\\1.1.0\\experimental.system.messaging.1.1.0.nupkg.sha512",
-    "C:\\Users\\priya\\.nuget\\packages\\ikvm\\8.1.5717\\ikvm.8.1.5717.nupkg.sha512"
+    "C:\\Users\\priya\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
+    "C:\\Users\\priya\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\6.16.0\\microsoft.identitymodel.jsonwebtokens.6.16.0.nupkg.sha512",
+    "C:\\Users\\priya\\.nuget\\packages\\microsoft.identitymodel.logging\\6.16.0\\microsoft.identitymodel.logging.6.16.0.nupkg.sha512",
+    "C:\\Users\\priya\\.nuget\\packages\\microsoft.identitymodel.tokens\\6.16.0\\microsoft.identitymodel.tokens.6.16.0.nupkg.sha512",
+    "C:\\Users\\priya\\.nuget\\packages\\system.identitymodel.tokens.jwt\\6.16.0\\system.identitymodel.tokens.jwt.6.16.0.nupkg.sha512",
+    "C:\\Users\\priya\\.nuget\\packages\\system.security.cryptography.cng\\4.5.0\\system.security.cryptography.cng.4.5.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1701",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'IKVM 8.1.5717' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
-      "libraryId": "IKVM",
-      "targetGraphs": [
-        ".NETCoreApp,Version=v3.1"
-      ]
-    }
-  ]
+  "logs": []
 }

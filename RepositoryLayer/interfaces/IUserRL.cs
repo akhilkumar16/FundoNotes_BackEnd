@@ -14,18 +14,18 @@ namespace RepositoryLayer.interfaces
         /// <param name="userRegmodel"></param>
         /// <returns></returns>
         public User Registration(UserRegmodel userRegmodel);
-        /// <summary>
-        /// userLogin for Login 
-        /// </summary>
-        /// <param name="userLogin"></param>
-        /// <returns></returns>
-        //public string Login(UserLoginmodel userLogin);
+       
         /// <summary>
         /// UserLogin for All login details
         /// </summary>
         /// <param name="user1"></param>
         /// <returns></returns>
         public LoginResponseModel UserLogin(UserLoginmodel info);
+
+        public string ForgotPassword(string Email);
+
+        public bool ResetPassword(String Email, string Password, String ConfirmPassword);
+
 
     }
 }
