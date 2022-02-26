@@ -31,7 +31,7 @@ namespace RepositoryLayer.services
         /// <param name="userRegmodel"></param>
         /// <returns></returns>
         public User Registration(UserRegmodel userRegmodel) // User is the entitiy of RL.
-        {
+        { 
             try
             {
                 User newUser = new User(); // instance created.
