@@ -5248,11 +5248,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Bridgelabz\\CFP\\Fundonotes\\RepositoryLayer\\RepositoryLayer.csproj",
+      "projectUniqueName": "D:\\Bridgelabz\\CFP\\FundoNotes\\RepositoryLayer\\RepositoryLayer.csproj",
       "projectName": "RepositoryLayer",
-      "projectPath": "D:\\Bridgelabz\\CFP\\Fundonotes\\RepositoryLayer\\RepositoryLayer.csproj",
+      "projectPath": "D:\\Bridgelabz\\CFP\\FundoNotes\\RepositoryLayer\\RepositoryLayer.csproj",
       "packagesPath": "C:\\Users\\priya\\.nuget\\packages\\",
-      "outputPath": "D:\\Bridgelabz\\CFP\\Fundonotes\\RepositoryLayer\\obj\\",
+      "outputPath": "D:\\Bridgelabz\\CFP\\FundoNotes\\RepositoryLayer\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\priya\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -5269,8 +5269,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "D:\\Bridgelabz\\CFP\\Fundonotes\\CommonLayer\\CommonLayer.csproj": {
-              "projectPath": "D:\\Bridgelabz\\CFP\\Fundonotes\\CommonLayer\\CommonLayer.csproj"
+            "D:\\Bridgelabz\\CFP\\FundoNotes\\CommonLayer\\CommonLayer.csproj": {
+              "projectPath": "D:\\Bridgelabz\\CFP\\FundoNotes\\CommonLayer\\CommonLayer.csproj"
             }
           }
         }

@@ -6542,11 +6542,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Bridgelabz\\CFP\\Fundonotes\\Fundonotes\\Fundonotes.csproj",
+      "projectUniqueName": "D:\\Bridgelabz\\CFP\\FundoNotes\\Fundonotes\\Fundonotes.csproj",
       "projectName": "Fundonotes",
-      "projectPath": "D:\\Bridgelabz\\CFP\\Fundonotes\\Fundonotes\\Fundonotes.csproj",
+      "projectPath": "D:\\Bridgelabz\\CFP\\FundoNotes\\Fundonotes\\Fundonotes.csproj",
       "packagesPath": "C:\\Users\\priya\\.nuget\\packages\\",
-      "outputPath": "D:\\Bridgelabz\\CFP\\Fundonotes\\Fundonotes\\obj\\",
+      "outputPath": "D:\\Bridgelabz\\CFP\\FundoNotes\\Fundonotes\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\priya\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -6563,8 +6563,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "D:\\Bridgelabz\\CFP\\Fundonotes\\BusinessLayer\\BusinessLayer.csproj": {
-              "projectPath": "D:\\Bridgelabz\\CFP\\Fundonotes\\BusinessLayer\\BusinessLayer.csproj"
+            "D:\\Bridgelabz\\CFP\\FundoNotes\\BusinessLayer\\BusinessLayer.csproj": {
+              "projectPath": "D:\\Bridgelabz\\CFP\\FundoNotes\\BusinessLayer\\BusinessLayer.csproj"
             }
           }
         }
