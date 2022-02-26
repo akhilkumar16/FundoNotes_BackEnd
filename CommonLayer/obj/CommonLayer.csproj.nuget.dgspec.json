@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Bridgelabz\\CFP\\FundoNotes\\CommonLayer\\CommonLayer.csproj": {}
+    "D:\\Bridgelabz\\CFP\\Fundonotes\\CommonLayer\\CommonLayer.csproj": {}
   },
   "projects": {
-    "D:\\Bridgelabz\\CFP\\FundoNotes\\CommonLayer\\CommonLayer.csproj": {
+    "D:\\Bridgelabz\\CFP\\Fundonotes\\CommonLayer\\CommonLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Bridgelabz\\CFP\\FundoNotes\\CommonLayer\\CommonLayer.csproj",
+        "projectUniqueName": "D:\\Bridgelabz\\CFP\\Fundonotes\\CommonLayer\\CommonLayer.csproj",
         "projectName": "CommonLayer",
-        "projectPath": "D:\\Bridgelabz\\CFP\\FundoNotes\\CommonLayer\\CommonLayer.csproj",
+        "projectPath": "D:\\Bridgelabz\\CFP\\Fundonotes\\CommonLayer\\CommonLayer.csproj",
         "packagesPath": "C:\\Users\\priya\\.nuget\\packages\\",
-        "outputPath": "D:\\Bridgelabz\\CFP\\FundoNotes\\CommonLayer\\obj\\",
+        "outputPath": "D:\\Bridgelabz\\CFP\\Fundonotes\\CommonLayer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\priya\\AppData\\Roaming\\NuGet\\NuGet.Config",
