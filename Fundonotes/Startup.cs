@@ -39,22 +39,6 @@ namespace Fundonotes
                 // conneting with Database.
                 services.AddDbContext<FundoContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:FundoDB"])); 
                 services.AddControllers();
-                //    services.AddAuthentication(x =>
-                //    {
-                //        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                //        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                //    })
-                //.AddJwtBearer(x =>
-                //{
-                //    x.TokenValidationParameters = new TokenValidationParameters
-                //    {
-                //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
-                //        ValidateIssuer = true,
-                //        ValidateAudience = true,
-                //        ValidIssuer = "localhost",
-                //        ValidAudience = "localhost"
-                //    };
-                //});
                 services.AddSwaggerGen(c =>
                 {
                     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Welcome to FundooNotes" });
@@ -85,7 +69,6 @@ namespace Fundonotes
 
                 });
                 });
-                //var jwtSection = Configuration.GetSection("Jwt:Key");
                 services.AddAuthentication(option =>
                 {
                     option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
