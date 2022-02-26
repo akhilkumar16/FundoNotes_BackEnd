@@ -23,20 +23,21 @@ using System.Threading.Tasks;
 
 namespace Fundonotes
 {
-    public class Startup
+    public class Startup // program starts from here.
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            Configuration = configuration;// configuration data may come from Json file.
         }
 
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services) // All seevices are added here .
         {
             {
-                services.AddDbContext<FundoContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:FundoDB"]));
+                // conneting with Database.
+                services.AddDbContext<FundoContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:FundoDB"])); 
                 services.AddControllers();
                 //    services.AddAuthentication(x =>
                 //    {
@@ -101,18 +102,18 @@ namespace Fundonotes
                         ValidateLifetime = false,
 
                         ValidateIssuerSigningKey = true,
-
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])) //Configuration["JwtToken:SecretKey"]
-                };
+                        //Configuration["JwtToken:SecretKey"]
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:SecKey"])) 
+                    };
 
                 });
-                services.AddTransient<IUserBL, UserBL>();
-                services.AddTransient<IUserRL, UserRL>();
+                services.AddTransient<IUserBL, UserBL>(); //services are created each time when they are requested for Business Layer.
+                services.AddTransient<IUserRL, UserRL>(); //services are created each time when they are requested for Repository Layer.
             }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) // Middlewares are added in configure.
         {
             if (env.IsDevelopment())
             {
@@ -122,8 +123,8 @@ namespace Fundonotes
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
-            app.UseAuthorization();
+            app.UseAuthentication();// for Authentication @ resetpaswword 
+            app.UseAuthorization();// for Authorize the token 
 
             app.UseEndpoints(endpoints =>
             {

@@ -6,12 +6,12 @@ using System.Text;
 
 namespace RepositoryLayer.context
 {
-    public class FundoContext : DbContext
+    public class FundoContext : DbContext // context class is used to store the Value and Send.
     {
         public FundoContext(DbContextOptions options)
             : base(options)
         {
         }
-        public DbSet<User> UserTables { get; set; }
+        public DbSet<User> UserTables { get; set; } // holds result from the database.
     }
 }

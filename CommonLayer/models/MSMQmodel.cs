@@ -39,7 +39,7 @@ namespace CommonLayer.models
             var SmtpClient = new SmtpClient("Smtp.gmail.com") //To construct and send an email message by using SmtpClient.
             {
                 Port = 587,
-                Credentials = new NetworkCredential("mastroxtream@gmail.com", "Mastroxtream@123"),
+                Credentials = new NetworkCredential("mastroxtream@gmail.com", "Mastroxtream@123"),// connecting to Email.
                 EnableSsl = true,
             };
             SmtpClient.Send("mastroxtream@gmail.com", JWT, Subject, Body); //Mail sending Method.

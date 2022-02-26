@@ -9,12 +9,11 @@ namespace BusinessLayer.interfaces
     public interface IUserBL
     {
         public User Registration(UserRegmodel userRegmodel);
-        //public string Login(UserLoginmodel userLogin);
         public LoginResponseModel UserLogin(UserLoginmodel info);
 
         public string ForgotPassword(string Email);
 
-        public bool ResetPassword(String Email, string Password, String ConfirmPassword);
+        public bool ResetPassword(string Email, string Password, string ConfirmPassword);
 
     }
 }

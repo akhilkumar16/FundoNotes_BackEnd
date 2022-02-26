@@ -13,10 +13,13 @@ using System.Text;
 
 namespace RepositoryLayer.services
 {
+    /// <summary>
+    /// To store Data in DB
+    /// </summary>
     public class UserRL : IUserRL
     {
-        private readonly FundoContext fundoContext;
-        IConfiguration _Appsettings;
+        private readonly FundoContext fundoContext; //context class is used to query or save data to the database.
+        IConfiguration _Appsettings;  //IConfiguration interface is used to read Settings and Connection Strings from AppSettings.
         public UserRL(FundoContext fundoContext, IConfiguration Appsettings)
         {
             this.fundoContext = fundoContext;
@@ -27,16 +30,18 @@ namespace RepositoryLayer.services
         /// </summary>
         /// <param name="userRegmodel"></param>
         /// <returns></returns>
-        public User Registration(UserRegmodel userRegmodel)
+        public User Registration(UserRegmodel userRegmodel) // User is the entitiy of RL.
         {
             try
             {
-                User newUser = new User();
-                newUser.FristName = userRegmodel.FirstName;
+                User newUser = new User(); // instance created.
+                newUser.FristName = userRegmodel.FirstName; // line 35 - 38 calling the registration model class to get and set the values.
                 newUser.LastName = userRegmodel.LastName;
                 newUser.Email = userRegmodel.Email;
                 newUser.Password = userRegmodel.Password;
-                fundoContext.UserTables.Add(newUser);
+                newUser.CreatedAt = DateTime.Now;
+                newUser.ModifiedAt = DateTime.Now;
+                fundoContext.UserTables.Add(newUser); // Add a user in the DB.
                 int result = fundoContext.SaveChanges();
                 if (result > 0)
                 {
@@ -57,16 +62,17 @@ namespace RepositoryLayer.services
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
-        public LoginResponseModel UserLogin(UserLoginmodel info)
+        public LoginResponseModel UserLogin(UserLoginmodel info) // Method for Login.
         {
             try
             {
                 var Enteredlogin = this.fundoContext.UserTables.Where(X => X.Email == info.Email && X.Password == info.Password).FirstOrDefault();
+                // Above line is for Selecting User from a table with LINQ statements/expression
                 if (Enteredlogin !=null)
                 {
-                    LoginResponseModel data = new LoginResponseModel();
-                    string token = GenerateSecurityToken(Enteredlogin.Email , Enteredlogin.Id);
-                    data.Id = Enteredlogin.Id;
+                    LoginResponseModel data = new LoginResponseModel(); // instance created for login response model class.
+                    string token = GenerateSecurityToken(Enteredlogin.Email , Enteredlogin.Id); // method for token creation.
+                    data.Id = Enteredlogin.Id; // line 70 - 75 is for calling of the model class.
                     data.FirstName = Enteredlogin.FristName;
                     data.LastName = Enteredlogin.LastName;
                     data.Email = Enteredlogin.Email;
@@ -91,18 +97,18 @@ namespace RepositoryLayer.services
         /// <param name="Email"></param>
         /// <param name="Id"></param>
         /// <returns></returns>
-        private string GenerateSecurityToken(string Email,long Id)
+        private string GenerateSecurityToken(string Email,long Id) //Method for token Generation.
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_Appsettings["Jwt:SecKey"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_Appsettings["Jwt:SecKey"])); // Adding a securiy key in appsettings.json
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256); // identity model for security.
             var claims = new[] {
-                new Claim(ClaimTypes.Email,Email),
+                new Claim(ClaimTypes.Email,Email),// Access Claim values in controller.
                 new Claim("Id",Id.ToString())
             };
-            var token = new JwtSecurityToken(_Appsettings["Jwt:Issuer"],
+            var token = new JwtSecurityToken(_Appsettings["Jwt:Issuer"], // we specify the values for the issuer, security key.
               _Appsettings["Jwt:Issuer"],
               claims,
-              expires: DateTime.Now.AddMinutes(60),
+              expires: DateTime.Now.AddMinutes(60), // time for the token to be active.
               signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
 
@@ -112,15 +118,15 @@ namespace RepositoryLayer.services
         /// </summary>
         /// <param name="Email"></param>
         /// <returns></returns>
-        public string ForgotPassword(string Email)
+        public string ForgotPassword(string Email) // Method for Forgotpassword.
         {
             try
             {
-                var Enteredlogin = this.fundoContext.UserTables.Where(X => X.Email == Email).FirstOrDefault();
+                var Enteredlogin = this.fundoContext.UserTables.Where(X => X.Email == Email).FirstOrDefault(); //selecting Email from a table in DB.
                 if (Enteredlogin != null)
                 {
-                    var token = GenerateSecurityToken(Email, Enteredlogin.Id);
-                    new MSMQmodel().MSMQSender(token);
+                    var token = GenerateSecurityToken(Email, Enteredlogin.Id); // To create a token for Authorization.
+                    new MSMQmodel().MSMQSender(token); //Message Oriented Middleware that communicate using queues.
                     return token;
                 }
                 else
@@ -139,15 +145,15 @@ namespace RepositoryLayer.services
         /// <param name="Password"></param>
         /// <param name="ConfirmPassword"></param>
         /// <returns></returns>
-        public bool ResetPassword(String Email , string Password , String ConfirmPassword)
+        public bool ResetPassword(String Email , string Password , String ConfirmPassword) // method for Reseting the password for user registerd in DB.
         {
             try
             {
-                if (Password.Equals(ConfirmPassword))
+                if (Password.Equals(ConfirmPassword)) // comparing of passwords.
                 {
-                    User user = fundoContext.UserTables.Where(e => e.Email == Email).FirstOrDefault();
-                    user.Password = ConfirmPassword;
-                    fundoContext.SaveChanges();
+                    User user = fundoContext.UserTables.Where(e => e.Email == Email).FirstOrDefault(); // selecting the email from DB to change the password.
+                    user.Password = ConfirmPassword; // Given password should be as confirmed one.
+                    fundoContext.SaveChanges(); // Store the Data entered.
                     return true;
                 }
                 else

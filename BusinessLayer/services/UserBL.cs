@@ -10,7 +10,7 @@ namespace BusinessLayer.services
 {
     public class UserBL : IUserBL
     {
-        private readonly IUserRL userRL;
+        private readonly IUserRL userRL; // readonly can only be assigned a value from within the constructor(s) of a class.
         public UserBL(IUserRL userRL)
         {
             this.userRL = userRL;
