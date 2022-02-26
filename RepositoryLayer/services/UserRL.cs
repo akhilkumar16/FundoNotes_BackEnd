@@ -19,11 +19,11 @@ namespace RepositoryLayer.services
     public class UserRL : IUserRL
     {
         private readonly FundoContext fundoContext; //context class is used to query or save data to the database.
-        IConfiguration _Appsettings;  //IConfiguration interface is used to read Settings and Connection Strings from AppSettings.
-        public UserRL(FundoContext fundoContext, IConfiguration Appsettings)
+        IConfiguration _Toolsettings;  //IConfiguration interface is used to read Settings and Connection Strings from AppSettings.
+        public UserRL(FundoContext fundoContext, IConfiguration Toolsettings)
         {
             this.fundoContext = fundoContext;
-            _Appsettings = Appsettings;
+            _Toolsettings = Toolsettings;
         }
         /// <summary>
         /// Registration
@@ -99,14 +99,14 @@ namespace RepositoryLayer.services
         /// <returns></returns>
         private string GenerateSecurityToken(string Email,long Id) //Method for token Generation.
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_Appsettings["Jwt:SecKey"])); // Adding a securiy key in appsettings.json
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_Toolsettings["Jwt:SecKey"])); // Adding a securiy key in appsettings.json
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256); // identity model for security.
             var claims = new[] {
                 new Claim(ClaimTypes.Email,Email),// Access Claim values in controller.
                 new Claim("Id",Id.ToString())
             };
-            var token = new JwtSecurityToken(_Appsettings["Jwt:Issuer"], // we specify the values for the issuer, security key.
-              _Appsettings["Jwt:Issuer"],
+            var token = new JwtSecurityToken(_Toolsettings["Jwt:Issuer"], // we specify the values for the issuer, security key.
+              _Toolsettings["Jwt:Issuer"],
               claims,
               expires: DateTime.Now.AddMinutes(60), // time for the token to be active.
               signingCredentials: credentials);
