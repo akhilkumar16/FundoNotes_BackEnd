@@ -28,7 +28,7 @@ namespace CommonLayer.models
             messageQueue.BeginReceive();//its a method 
             messageQueue.Close();//line 23 - 25 is used to connecting with obj and sending multiple request to receive the response.
         }
-
+         
         private void MessageQueue_ReceiveCompleted(object sender, ReceiveCompletedEventArgs e)//Delegate is genreated by double tab.
         {
             var message = messageQueue.EndReceive(e.AsyncResult);// it receive the completed event.

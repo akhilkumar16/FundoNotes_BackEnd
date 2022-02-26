@@ -18,7 +18,7 @@ namespace Fundonotes.Controllers
         private readonly IUserBL userBL; // can only be assigned a value from within the constructor(s) of a class.
         public UserController(IUserBL userBL)
         {
-            this.userBL = userBL;
+            this.userBL = userBL; 
         }
         [HttpPost("Register")] // POST is to send and receive data.
         public IActionResult addUser(UserRegmodel userRegmodel) //IActionResult lets you return both data and HTTP codes.

@@ -7,7 +7,7 @@ using System.Text;
 namespace BusinessLayer.interfaces
 {
     public interface IUserBL
-    {
+    { 
         public User Registration(UserRegmodel userRegmodel);
         public LoginResponseModel UserLogin(UserLoginmodel info);
 

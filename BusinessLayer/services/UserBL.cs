@@ -53,7 +53,7 @@ namespace BusinessLayer.services
         {
             try
             {
-                return userRL.ResetPassword(Email,Password,ConfirmPassword);
+                return userRL.ResetPassword(Email,Password,ConfirmPassword); 
             }
             catch (Exception)
             {
