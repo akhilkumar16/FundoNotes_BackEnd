@@ -2,6 +2,7 @@
 using CommonLayer.models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RepositoryLayer.entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,17 +35,23 @@ namespace Fundonotes.Controllers
         }
         [HttpPut]
         [Route("updateNotes")]
-        public IActionResult UpdateNotes( Notesmodel notesUpdatemodel )
+        public IActionResult UpdateNotes(Notesmodel notesUpdatemodel)
         {
             try
             {
                 var result = this.notesBL.UpdateNote(notesUpdatemodel);
-                return this.Ok(new { success = true, message = "Notes Updated Successful", data = result});
+                return this.Ok(new { success = true, message = "Notes Updated Successful", data = result });
             }
             catch (Exception)
             {
                 return this.BadRequest(new { success = false, message = "Notes Not Updated" });
             }
+        }
+        [HttpGet]
+        [Route(("GetNotes"))]
+        public IList<Notesmodel> Getlist()
+        {
+            return this.notesBL.GetNote();
         }
     }
 }

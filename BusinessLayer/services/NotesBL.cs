@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.interfaces;
 using CommonLayer.models;
+using RepositoryLayer.entities;
 using RepositoryLayer.interfaces;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,11 @@ namespace BusinessLayer.services
 
                 throw;
             }
+        }
+
+        public IList<Notes> GetNote(long Id)
+        {
+            return notesRL.GetNote(Id);
         }
 
         public string UpdateNote(Notesmodel notesUpdatemodel)

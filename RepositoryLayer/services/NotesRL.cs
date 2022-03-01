@@ -52,6 +52,16 @@ namespace RepositoryLayer.services
                 throw;
             }
         }
+        public IList<Notes> GetNote(long Id)
+        {
+            var listNote = fundoContext.Notestables.Where(X => X.Id == Id).SingleOrDefault();
+            if (listNote != null)
+            {
+                return fundoContext.Notestables.Where(list => list.Id == Id).ToList();
+            }
+            return null;
+        }
+
         public string UpdateNote(Notesmodel notesUpdatemodel)
         {
             try
@@ -63,6 +73,7 @@ namespace RepositoryLayer.services
                     result.Discription = notesUpdatemodel.Discription;
                     result.ModifiedAt = DateTime.Now;
                     result.Color = notesUpdatemodel.Color;
+ 
                     this.fundoContext.SaveChanges();
                     return "Modified";
                 }
@@ -80,5 +91,6 @@ namespace RepositoryLayer.services
             }
             
         }
+        
     }
 }
