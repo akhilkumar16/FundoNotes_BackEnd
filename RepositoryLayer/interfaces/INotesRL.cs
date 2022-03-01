@@ -8,5 +8,8 @@ namespace RepositoryLayer.interfaces
     public interface INotesRL
     {
         public bool AddNotes(Notesmodel notesmodel);
+        public string UpdateNote(Notesmodel notesUpdatemodel);
+
+
     }
 }

@@ -26,5 +26,19 @@ namespace BusinessLayer.services
                 throw;
             }
         }
+
+        public string UpdateNote(Notesmodel notesUpdatemodel)
+        {
+            try
+            {
+                return notesRL.UpdateNote(notesUpdatemodel);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+        }
     }
 }

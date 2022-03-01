@@ -18,7 +18,8 @@ namespace Fundonotes.Controllers
         {
             this.notesBL = notesBL;
         }
-        [HttpPost("CreateNotes")] // POST is to send and receive data.
+        [HttpPost]// POST is to send and receive data.
+        [Route("CreateNotes")]
         public IActionResult AddNotes(Notesmodel notesmodel)
         {
             try
@@ -29,6 +30,20 @@ namespace Fundonotes.Controllers
             catch (Exception)
             {
                 return this.BadRequest(new { success = false, message = "Notes Not Added" });
+            }
+        }
+        [HttpPut]
+        [Route("updateNotes")]
+        public IActionResult UpdateNotes( Notesmodel notesUpdatemodel )
+        {
+            try
+            {
+                var result = this.notesBL.UpdateNote(notesUpdatemodel);
+                return this.Ok(new { success = true, message = "Notes Updated Successful", data = result});
+            }
+            catch (Exception)
+            {
+                return this.BadRequest(new { success = false, message = "Notes Not Updated" });
             }
         }
     }

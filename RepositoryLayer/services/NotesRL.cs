@@ -5,6 +5,7 @@ using RepositoryLayer.entities;
 using RepositoryLayer.interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace RepositoryLayer.services
@@ -50,6 +51,34 @@ namespace RepositoryLayer.services
             { 
                 throw;
             }
+        }
+        public string UpdateNote(Notesmodel notesUpdatemodel)
+        {
+            try
+            {
+                var result = fundoContext.Notestables.Where(X => X.Id == notesUpdatemodel.Id).SingleOrDefault();
+                if (result != null)
+                {
+                    result.Title = notesUpdatemodel.Title;
+                    result.Discription = notesUpdatemodel.Discription;
+                    result.ModifiedAt = DateTime.Now;
+                    result.Color = notesUpdatemodel.Color;
+                    this.fundoContext.SaveChanges();
+                    return "Modified";
+                }
+                else
+                {
+                    return "Not Modified";
+
+                }
+
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+            
         }
     }
 }
