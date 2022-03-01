@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace RepositoryLayer.entities
+namespace CommonLayer.models
 {
-    public class Notes
+    public class Notesmodel
     {
-
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public string Title { get; set; }
         public string Discription { get; set; }
@@ -23,8 +18,5 @@ namespace RepositoryLayer.entities
         public DateTime? Reminder { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? ModifiedAt { get; set; }
-        public ICollection<User> Users { get; set; } // for forgein key 
-
-
     }
 }

@@ -5,15 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20220228061506_NotesTable.cs" />
-    <Compile Remove="Migrations\20220228061506_NotesTable.Designer.cs" />
-    <Compile Remove="Migrations\20220228062100_NotesTable.cs" />
-    <Compile Remove="Migrations\20220228062100_NotesTable.Designer.cs" />
-    <Compile Remove="Migrations\20220228071545_Note.cs" />
-    <Compile Remove="Migrations\20220228071545_Note.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.0">
       <PrivateAssets>all</PrivateAssets>

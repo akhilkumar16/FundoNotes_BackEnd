@@ -21,7 +21,7 @@ namespace RepositoryLayer.Migrations
 
             modelBuilder.Entity("RepositoryLayer.entities.Notes", b =>
                 {
-                    b.Property<long>("NotesId")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -29,44 +29,39 @@ namespace RepositoryLayer.Migrations
                     b.Property<bool>("Archive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Background")
+                    b.Property<string>("Backgroundcolour")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreatedTime")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("Delete")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Discription")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("ModifiedTime")
+                    b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("Pin")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Remainder")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime?>("Reminder")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long?>("UserId")
-                        .HasColumnType("bigint");
+                    b.HasKey("Id");
 
-                    b.HasKey("NotesId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Notes");
+                    b.ToTable("Notestables");
                 });
 
             modelBuilder.Entity("RepositoryLayer.entities.User", b =>
@@ -94,20 +89,25 @@ namespace RepositoryLayer.Migrations
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<long?>("NotesId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("NotesId");
+
                     b.ToTable("UserTables");
                 });
 
-            modelBuilder.Entity("RepositoryLayer.entities.Notes", b =>
+            modelBuilder.Entity("RepositoryLayer.entities.User", b =>
                 {
-                    b.HasOne("RepositoryLayer.entities.User", "User")
-                        .WithMany("Notes")
-                        .HasForeignKey("UserId");
+                    b.HasOne("RepositoryLayer.entities.Notes", "Notes")
+                        .WithMany("Users")
+                        .HasForeignKey("NotesId");
                 });
 #pragma warning restore 612, 618
         }

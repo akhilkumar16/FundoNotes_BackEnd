@@ -13,5 +13,7 @@ namespace RepositoryLayer.context
         {
         }
         public DbSet<User> UserTables { get; set; } // holds result from the database.
+
+        public DbSet<Notes> Notestables { get; set; }
     }
 }
