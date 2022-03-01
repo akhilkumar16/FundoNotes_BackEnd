@@ -28,9 +28,17 @@ namespace BusinessLayer.services
             }
         }
 
-        public IList<Notes> GetNote(long Id)
+        public List<Notes> GetAllNotes()
         {
-            return notesRL.GetNote(Id);
+            try
+            {
+                return notesRL.GetAllNotes();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public string UpdateNote(Notesmodel notesUpdatemodel)

@@ -52,14 +52,10 @@ namespace RepositoryLayer.services
                 throw;
             }
         }
-        public IList<Notes> GetNote(long Id)
+        public List<Notes> GetAllNotes()
         {
-            var listNote = fundoContext.Notestables.Where(X => X.Id == Id).SingleOrDefault();
-            if (listNote != null)
-            {
-                return fundoContext.Notestables.Where(list => list.Id == Id).ToList();
-            }
-            return null;
+            this.fundoContext.SaveChanges();
+            return this.fundoContext.Notestables.ToList();
         }
 
         public string UpdateNote(Notesmodel notesUpdatemodel)

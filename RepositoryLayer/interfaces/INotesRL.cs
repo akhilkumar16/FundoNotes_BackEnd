@@ -10,7 +10,7 @@ namespace RepositoryLayer.interfaces
     {
         public bool AddNotes(Notesmodel notesmodel);
         public string UpdateNote(Notesmodel notesUpdatemodel);
-        public IList<Notes> GetNote(long Id);
+        public List<Notes> GetAllNotes();
 
     }
 }

@@ -48,10 +48,18 @@ namespace Fundonotes.Controllers
             }
         }
         [HttpGet]
-        [Route(("GetNotes"))]
-        public IList<Notesmodel> Getlist()
+        [Route("GetAllNotes")]
+        public IActionResult GetAllNotes()
         {
-            return this.notesBL.GetNote();
+            try
+            {
+                List<Notes> notes = this.notesBL.GetAllNotes();
+                return Ok(notes);
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
         }
     }
 }
