@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.interfaces;
 using CommonLayer.models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryLayer.entities;
@@ -12,6 +13,7 @@ namespace Fundonotes.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize] //user to grant and restrict permissions on Web pages.
     public class NotesController : ControllerBase
     {
         private readonly INotesBL notesBL; // can only be assigned a value from within the constructor(s) of a class.
@@ -25,12 +27,13 @@ namespace Fundonotes.Controllers
         {
             try
             {
-                var result = this.notesBL.AddNotes(notesmodel);
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var result = this.notesBL.AddNotes(notesmodel,userid);
                 return this.Ok(new { success = true, message = "Notes Added Successful", data = result });
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return this.BadRequest(new { success = false, message = "Notes Not Added" });
+                return this.BadRequest(new { success = false, message = e.InnerException });
             }
         }
         [HttpPut]

@@ -15,11 +15,11 @@ namespace BusinessLayer.services
         {
             this.notesRL = notesRL;
         }
-        public bool AddNotes(Notesmodel notesmodel)
+        public bool AddNotes(Notesmodel notesmodel,long userId)
         {
             try
             {
-                return notesRL.AddNotes(notesmodel);
+                return notesRL.AddNotes(notesmodel,userId);
             }
             catch (Exception)
             {

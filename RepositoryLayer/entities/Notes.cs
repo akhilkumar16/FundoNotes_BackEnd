@@ -11,7 +11,7 @@ namespace RepositoryLayer.entities
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
+        public long NoteId { get; set; }
         public string Title { get; set; }
         public string Discription { get; set; }
         public string Image { get; set; }
@@ -23,7 +23,9 @@ namespace RepositoryLayer.entities
         public DateTime? Reminder { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? ModifiedAt { get; set; }
-        public ICollection<User> Users { get; set; } // for forgein key 
+        [ForeignKey("user")]
+        public long UserId { get; set; }
+        public virtual User user { get; set; }
 
 
     }

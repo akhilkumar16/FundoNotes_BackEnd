@@ -9,7 +9,7 @@ namespace RepositoryLayer.entities
     {
         [Key] // DataAnnotation for setting the primary Key value.
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Generaters the vallues for the database Id's.
-        public long Id { get; set; }
+        public long UserId { get; set; }
         [Required]
         [RegularExpression(@"^[A-Z]{1}[a-z]{3}$")] // Name in Specified format.
         public string FristName { get; set; }
@@ -24,7 +24,6 @@ namespace RepositoryLayer.entities
         public string Password { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? ModifiedAt { get; set; }
-        public Notes Notes { get; set; }
 
     }
 }

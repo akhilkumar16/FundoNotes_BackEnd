@@ -8,7 +8,7 @@ namespace RepositoryLayer.interfaces
 {
     public interface INotesRL
     {
-        public bool AddNotes(Notesmodel notesmodel);
+        public bool AddNotes(Notesmodel notesmodel,long userId);
         public string UpdateNote(Notesmodel notesUpdatemodel);
         public List<Notes> GetAllNotes();
         public List<Notes> GetNote(int Id);

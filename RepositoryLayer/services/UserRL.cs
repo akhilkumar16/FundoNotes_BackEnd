@@ -71,8 +71,8 @@ namespace RepositoryLayer.services
                 if (Enteredlogin !=null)
                 {
                     LoginResponseModel data = new LoginResponseModel(); // instance created for login response model class.
-                    string token = GenerateSecurityToken(Enteredlogin.Email , Enteredlogin.Id); // method for token creation.
-                    data.Id = Enteredlogin.Id; // line 70 - 75 is for calling of the model class.
+                    string token = GenerateSecurityToken(Enteredlogin.Email , Enteredlogin.UserId); // method for token creation.
+                    data.Id = Enteredlogin.UserId; // line 70 - 75 is for calling of the model class.
                     data.FirstName = Enteredlogin.FristName;
                     data.LastName = Enteredlogin.LastName;
                     data.Email = Enteredlogin.Email;
@@ -125,7 +125,7 @@ namespace RepositoryLayer.services
                 var Enteredlogin = this.fundoContext.UserTables.Where(X => X.Email == Email).FirstOrDefault(); //selecting Email from a table in DB.
                 if (Enteredlogin != null)
                 {
-                    var token = GenerateSecurityToken(Email, Enteredlogin.Id); // To create a token for Authorization.
+                    var token = GenerateSecurityToken(Email, Enteredlogin.UserId); // To create a token for Authorization.
                     new MSMQmodel().MSMQSender(token); //Message Oriented Middleware that communicate using queues.
                     return token;
                 }

@@ -19,12 +19,12 @@ namespace RepositoryLayer.services
             this.fundoContext = fundoContext;
             _Toolsettings = Toolsettings;
         }
-        public bool AddNotes(Notesmodel notesmodel) 
+        public bool AddNotes(Notesmodel notesmodel,long userId) 
         {
             try
             {
                 Notes fundonotes = new Notes();
-                fundonotes.Id = notesmodel.Id;
+                fundonotes.UserId = userId;
                 fundonotes.Title = notesmodel.Title;
                 fundonotes.Discription = notesmodel.Discription;
                 fundonotes.Reminder = notesmodel.Reminder;
@@ -33,7 +33,6 @@ namespace RepositoryLayer.services
                 fundonotes.Backgroundcolour = notesmodel.Backgroundcolour;
                 fundonotes.Archive = notesmodel.Archive;
                 fundonotes.Pin = notesmodel.Pin;
-                fundonotes.ModifiedAt = DateTime.Now;
                 fundonotes.CreatedAt = DateTime.Now;
                 fundoContext.Notestables.Add(fundonotes);
                 var result = this.fundoContext.SaveChanges();
@@ -57,12 +56,12 @@ namespace RepositoryLayer.services
             this.fundoContext.SaveChanges();
             return this.fundoContext.Notestables.ToList();
         }
-        public List<Notes> GetNote(int Id)
+        public List<Notes> GetNote(int NotesId)
         {
-            var listNote = fundoContext.Notestables.Where(list => list.Id == Id).SingleOrDefault();
+            var listNote = fundoContext.Notestables.Where(list => list.NoteId == NotesId).SingleOrDefault();
             if (listNote != null)
             {
-                return fundoContext.Notestables.Where(list => list.Id == Id).ToList();
+                return fundoContext.Notestables.Where(list => list.NoteId == NotesId).ToList();
             }
             return null;
         }
@@ -71,7 +70,7 @@ namespace RepositoryLayer.services
         {
             try
             {
-                var result = fundoContext.Notestables.Where(X => X.Id == notesUpdatemodel.Id).SingleOrDefault();
+                var result = fundoContext.Notestables.Where(X => X.NoteId == notesUpdatemodel.NotesId).SingleOrDefault();
                 if (result != null)
                 {
                     result.Title = notesUpdatemodel.Title;
@@ -98,7 +97,7 @@ namespace RepositoryLayer.services
         }
         public string DeleteNote(int Noteid)
         {
-            var deletenote = fundoContext.Notestables.Where(del => del.Id == Noteid).SingleOrDefault();
+            var deletenote = fundoContext.Notestables.Where(del => del.NoteId == Noteid).SingleOrDefault();
             if (deletenote != null)
             {
                 fundoContext.Notestables.Remove(deletenote);

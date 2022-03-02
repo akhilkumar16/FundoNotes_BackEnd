@@ -21,7 +21,7 @@ namespace RepositoryLayer.Migrations
 
             modelBuilder.Entity("RepositoryLayer.entities.Notes", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<long>("NoteId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -59,14 +59,19 @@ namespace RepositoryLayer.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("NoteId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Notestables");
                 });
 
             modelBuilder.Entity("RepositoryLayer.entities.User", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<long>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -89,25 +94,22 @@ namespace RepositoryLayer.Migrations
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<long?>("NotesId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("NotesId");
+                    b.HasKey("UserId");
 
                     b.ToTable("UserTables");
                 });
 
-            modelBuilder.Entity("RepositoryLayer.entities.User", b =>
+            modelBuilder.Entity("RepositoryLayer.entities.Notes", b =>
                 {
-                    b.HasOne("RepositoryLayer.entities.Notes", "Notes")
-                        .WithMany("Users")
-                        .HasForeignKey("NotesId");
+                    b.HasOne("RepositoryLayer.entities.User", "user")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
