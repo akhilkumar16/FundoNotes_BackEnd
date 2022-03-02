@@ -11,6 +11,9 @@ namespace RepositoryLayer.interfaces
         public bool AddNotes(Notesmodel notesmodel);
         public string UpdateNote(Notesmodel notesUpdatemodel);
         public List<Notes> GetAllNotes();
+        public List<Notes> GetNote(int Id);
+        public string DeleteNote(int Noteid);
+
 
     }
 }

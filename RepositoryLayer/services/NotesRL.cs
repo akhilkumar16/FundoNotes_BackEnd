@@ -57,6 +57,15 @@ namespace RepositoryLayer.services
             this.fundoContext.SaveChanges();
             return this.fundoContext.Notestables.ToList();
         }
+        public List<Notes> GetNote(int Id)
+        {
+            var listNote = fundoContext.Notestables.Where(list => list.Id == Id).SingleOrDefault();
+            if (listNote != null)
+            {
+                return fundoContext.Notestables.Where(list => list.Id == Id).ToList();
+            }
+            return null;
+        }
 
         public string UpdateNote(Notesmodel notesUpdatemodel)
         {
@@ -87,6 +96,19 @@ namespace RepositoryLayer.services
             }
             
         }
-        
+        public string DeleteNote(int Noteid)
+        {
+            var deletenote = fundoContext.Notestables.Where(del => del.Id == Noteid).SingleOrDefault();
+            if (deletenote != null)
+            {
+                fundoContext.Notestables.Remove(deletenote);
+                this.fundoContext.SaveChanges();
+                return "Note Deleted Successfully";
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

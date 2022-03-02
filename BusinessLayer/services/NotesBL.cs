@@ -28,11 +28,39 @@ namespace BusinessLayer.services
             }
         }
 
+        public string DeleteNote(int Noteid)
+        {
+            try
+            {
+                return notesRL.DeleteNote(Noteid);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public List<Notes> GetAllNotes()
         {
             try
             {
                 return notesRL.GetAllNotes();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public List<Notes> GetNote(int Id)
+        {
+            try
+            {
+                return notesRL.GetNote(Id);
+
             }
             catch (Exception)
             {

@@ -56,9 +56,23 @@ namespace Fundonotes.Controllers
                 List<Notes> notes = this.notesBL.GetAllNotes();
                 return Ok(notes);
             }
-            catch (Exception exception)
+            catch (Exception)
             {
-                return BadRequest(exception.Message);
+                return BadRequest();
+            }
+        }
+        [HttpDelete]
+        [Route("Deletenote")]
+        public IActionResult DeleteNote(int Noteid)
+        {
+            try
+            {
+                var delete = this.notesBL.DeleteNote(Noteid);
+                return this.Ok(delete);
+            }
+            catch (Exception)
+            {
+                return this.BadRequest();
             }
         }
     }
