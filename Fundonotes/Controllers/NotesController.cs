@@ -42,7 +42,8 @@ namespace Fundonotes.Controllers
         {
             try
             {
-                var result = this.notesBL.UpdateNote(notesUpdatemodel);
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var result = this.notesBL.UpdateNote(notesUpdatemodel,userid);
                 return this.Ok(new { success = true, message = "Notes Updated Successful", data = result });
             }
             catch (Exception)
@@ -57,6 +58,20 @@ namespace Fundonotes.Controllers
             try
             {
                 List<Notes> notes = this.notesBL.GetAllNotes();
+                return Ok(notes);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+        [HttpGet]
+        [Route("GetNotesId")]
+        public IActionResult Getnote( int Id)
+        {
+            try
+            {
+                List<Notes> notes = this.notesBL.GetNote(Id);
                 return Ok(notes);
             }
             catch (Exception)

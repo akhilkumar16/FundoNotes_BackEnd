@@ -68,7 +68,7 @@ namespace BusinessLayer.services
             }
         }
 
-        public string UpdateNote(Notesmodel notesUpdatemodel)
+        public string UpdateNote(Notesmodel notesUpdatemodel, long userid)
         {
             try
             {
