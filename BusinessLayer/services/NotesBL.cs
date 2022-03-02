@@ -27,11 +27,12 @@ namespace BusinessLayer.services
                 throw;
             }
         }
-        public string DeleteNote(int Noteid)
+
+        public string Archive(long NoteId)
         {
             try
             {
-                return notesRL.DeleteNote(Noteid);
+                return notesRL.Archive(NoteId);
 
             }
             catch (Exception)
@@ -41,24 +42,11 @@ namespace BusinessLayer.services
             }
         }
 
-        public List<Notes> GetAllNotes()
+        public string DeleteNote(long NoteId)
         {
             try
             {
-                return notesRL.GetAllNotes();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
-        public List<Notes> GetNote(int Id)
-        {
-            try
-            {
-                return notesRL.GetNote(Id);
+                return notesRL.DeleteNote(NoteId);
 
             }
             catch (Exception)
@@ -68,7 +56,87 @@ namespace BusinessLayer.services
             }
         }
 
-        public string UpdateNote(Notesmodel notesUpdatemodel, long userid)
+        public List<Notes> GetAllNotes(long userId)
+        {
+            try
+            {
+                return notesRL.GetAllNotes(userId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public List<Notes> GetNote(long NoteId)
+        {
+            try
+            {
+                return notesRL.GetNote(NoteId);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public string Pin(long NoteId)
+        {
+            try
+            {
+                return notesRL.Pin(NoteId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+        }
+
+        public string Trash(long NoteId)
+        {
+            try
+            {
+                return notesRL.Trash(NoteId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public string UnArchive(long NoteId)
+        {
+            try
+            {
+                return notesRL.UnArchive(NoteId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public string UnPin(long NoteId)
+        {
+            try
+            {
+                return notesRL.UnPin(NoteId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public string UpdateNote(Notesmodel notesUpdatemodel, long userId)
         {
             try
             {

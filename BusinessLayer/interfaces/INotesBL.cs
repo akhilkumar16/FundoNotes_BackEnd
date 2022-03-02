@@ -10,9 +10,14 @@ namespace BusinessLayer.interfaces
     {
         public bool AddNotes(Notesmodel notesmodel,long userId);
         public string UpdateNote(Notesmodel notesUpdatemodel, long userId);
-        public List<Notes> GetAllNotes();
-        public List<Notes> GetNote(int Id);
-        public string DeleteNote(int Noteid);
+        public List<Notes> GetAllNotes(long NoteId);
+        public List<Notes> GetNote(long NoteId);
+        public string DeleteNote(long NoteId);
+        public string Archive(long NoteId);
+        public string UnArchive(long NoteId);
+        public string Pin(long NoteId);
+        public string UnPin(long NoteId);
+        public string Trash(long NoteId);
 
     }
 }

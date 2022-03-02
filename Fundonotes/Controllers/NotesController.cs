@@ -3,6 +3,7 @@ using CommonLayer.models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RepositoryLayer.context;
 using RepositoryLayer.entities;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace Fundonotes.Controllers
     public class NotesController : ControllerBase
     {
         private readonly INotesBL notesBL; // can only be assigned a value from within the constructor(s) of a class.
+        private readonly FundoContext fundocontext;
         public NotesController(INotesBL notesBL)
         {
             this.notesBL = notesBL;
@@ -53,11 +55,12 @@ namespace Fundonotes.Controllers
         }
         [HttpGet]
         [Route("GetAllNotes")]
-        public IActionResult GetAllNotes()
+        public IActionResult GetAllNotes(long userId)
         {
             try
             {
-                List<Notes> notes = this.notesBL.GetAllNotes();
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                List<Notes> notes = this.notesBL.GetAllNotes(userId);
                 return Ok(notes);
             }
             catch (Exception)
@@ -67,11 +70,12 @@ namespace Fundonotes.Controllers
         }
         [HttpGet]
         [Route("GetNotesId")]
-        public IActionResult Getnote( int Id)
+        public IActionResult Getnote(long NoteId)
         {
             try
             {
-                List<Notes> notes = this.notesBL.GetNote(Id);
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                List<Notes> notes = this.notesBL.GetNote(NoteId);
                 return Ok(notes);
             }
             catch (Exception)
@@ -81,16 +85,97 @@ namespace Fundonotes.Controllers
         }
         [HttpDelete]
         [Route("Deletenote")]
-        public IActionResult DeleteNote(int Noteid)
+        public IActionResult DeleteNote(long NoteId)
         {
             try
             {
-                var delete = this.notesBL.DeleteNote(Noteid);
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var delete = this.notesBL.DeleteNote(NoteId);
                 return this.Ok(delete);
             }
             catch (Exception)
             {
                 return this.BadRequest();
+            }
+        }
+        [HttpPut]
+        [Route("Archive")]
+        public IActionResult Archieve(long NoteId)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var Arch = this.fundocontext.Notestables.Where(x => x.NoteId == NoteId).SingleOrDefault();
+                if (Arch.UserId == userid)
+                {
+                    var archieve = this.notesBL.Archive(NoteId);
+                    return this.Ok(new { success = true, message = "Notes Archieve Successful" });
+                }
+                else
+                {
+                    return this.Unauthorized(new { Success = false, message = "Not a user" });
+                }
+            }
+            catch (Exception)
+            {
+                return this.BadRequest(new { success = false, message = "Notes Not Archieved" });
+            }
+        }
+        [HttpPut]
+        [Route("Unarchive")]
+        public IActionResult UnArchieve(long NoteId)
+        {
+            try
+            {
+                var unarchieve = this.notesBL.UnArchive(NoteId);
+                return this.Ok(new { success = true, message = "Notes Unarchieve Successful",data = unarchieve });
+            }
+            catch (Exception)
+            {
+                return this.BadRequest(new { success = false, message = "Notes Not UnArchieved" });
+            }
+        }
+        [HttpPut]
+        [Route("pin")]
+        public IActionResult Pin(long NoteId)
+        {
+            try
+            {
+                var pin = this.notesBL.Pin(NoteId);
+                return this.Ok(new { success = true, message = "Notes Pinned Successful", data = pin });
+            }
+            catch (Exception)
+            {
+                return this.BadRequest(new { success = false, message = "Notes Not pinned" });
+            }
+        }
+        [HttpPut]
+        [Route("unpin")]
+        public IActionResult UnPin(long NoteId)
+        {
+            try
+            {
+                var unpin = this.notesBL.UnPin(NoteId);
+                return this.Ok(new { success = true, message = "Notes UnPinned Successful", data = unpin });
+            }
+            catch (Exception)
+            {
+                return this.BadRequest(new { success = false, message = "Notes Not pinned" });
+            }
+        }
+        [HttpDelete]
+        [Route("Trashnote")]
+        public IActionResult TrashNote(long NoteId)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var trash = this.notesBL.Trash(NoteId);
+                return this.Ok(new { success = true, message = "Notes Trashed Successful", data = trash });
+            }
+            catch (Exception)
+            {
+                return this.BadRequest(new { success = false, message = "Notes UnTrashed" });
             }
         }
     }

@@ -19,7 +19,7 @@ namespace RepositoryLayer.services
             this.fundoContext = fundoContext;
             _Toolsettings = Toolsettings;
         }
-        public bool AddNotes(Notesmodel notesmodel,long userId) 
+        public bool AddNotes(Notesmodel notesmodel, long userId)
         {
             try
             {
@@ -44,19 +44,19 @@ namespace RepositoryLayer.services
                 {
                     return false;
                 }
-                    
+
             }
             catch (Exception)
-            { 
+            {
                 throw;
             }
         }
-        public List<Notes> GetAllNotes()
+        public List<Notes> GetAllNotes(long UserId)
         {
             this.fundoContext.SaveChanges();
             return this.fundoContext.Notestables.ToList();
         }
-        public List<Notes> GetNote(int NotesId)
+        public List<Notes> GetNote(long NotesId)
         {
             var listNote = fundoContext.Notestables.Where(list => list.NoteId == NotesId).SingleOrDefault();
             if (listNote != null)
@@ -77,7 +77,7 @@ namespace RepositoryLayer.services
                     result.Discription = notesUpdatemodel.Discription;
                     result.ModifiedAt = DateTime.Now;
                     result.Color = notesUpdatemodel.Color;
- 
+
                     this.fundoContext.SaveChanges();
                     return "Modified";
                 }
@@ -90,23 +90,104 @@ namespace RepositoryLayer.services
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
-            
+
         }
-        public string DeleteNote(int Noteid)
+        public string DeleteNote(long NoteId)
         {
-            var deletenote = fundoContext.Notestables.Where(del => del.NoteId == Noteid).SingleOrDefault();
+            var deletenote = fundoContext.Notestables.Where(del => del.NoteId == NoteId).SingleOrDefault();
             if (deletenote != null)
             {
                 fundoContext.Notestables.Remove(deletenote);
                 this.fundoContext.SaveChanges();
-                return "Note Deleted Successfully";
+                return "Notes Deleted Successfully";
             }
             else
             {
                 return null;
+            }
+        }
+        public string Archive(long NoteId)
+        {
+            var result = this.fundoContext.Notestables.Where(arch => arch.NoteId == NoteId).SingleOrDefault();
+            if (result != null)
+            {
+                result.Archive = true;
+                this.fundoContext.SaveChanges();
+                return "Notes archived";
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public string UnArchive(long NoteId)
+        {
+            var result = this.fundoContext.Notestables.Where(arch => arch.NoteId == NoteId && arch.Archive == true).SingleOrDefault();
+            if (result != null)
+            {
+                result.Archive = false;
+                this.fundoContext.SaveChanges();
+                return "Notes Unarchived";
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public string Pin(long NoteId)
+        {
+            var result = this.fundoContext.Notestables.Where(pin => pin.NoteId == NoteId).SingleOrDefault();
+            if (result != null)
+            {
+                result.Pin = true;
+                this.fundoContext.SaveChanges();
+                return "Notes Pinned";
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public string UnPin(long NoteId)
+        {
+            var result = this.fundoContext.Notestables.Where(Upin => Upin.NoteId == NoteId && Upin.Pin == true).SingleOrDefault();
+            if (result != null)
+            {
+                result.Pin = false;
+                this.fundoContext.SaveChanges();
+                return "Notes UnPinned";
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public string Trash(long NoteId)
+        {
+            var TrashNote = this.fundoContext.Notestables.Where(X => X.NoteId == NoteId).SingleOrDefault();
+            if (TrashNote != null)
+            {
+                if (TrashNote.Delete == false)
+                {
+                    TrashNote.Delete = true;
+                    this.fundoContext.SaveChangesAsync();
+                    return "Notes trashed";
+                }
+                if (TrashNote.Delete == true)
+                {
+                    TrashNote.Delete = false;
+                    this.fundoContext.SaveChangesAsync();
+                    return "Notes Untrashed";
+                }
+                return null;
+            }
+            else
+            {
+                return " No Note";
+
             }
         }
     }
