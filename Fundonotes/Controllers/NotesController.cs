@@ -55,12 +55,12 @@ namespace Fundonotes.Controllers
         }
         [HttpGet]
         [Route("GetAllNotes")]
-        public IActionResult GetAllNotes(long userId)
+        public IActionResult GetAllNotes()
         {
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                List<Notes> notes = this.notesBL.GetAllNotes(userId);
+                IEnumerable<Notes> notes = this.notesBL.GetAllNotes(userid);
                 return Ok(notes);
             }
             catch (Exception)
@@ -104,21 +104,12 @@ namespace Fundonotes.Controllers
         {
             try
             {
-                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var Arch = this.fundocontext.Notestables.Where(x => x.NoteId == NoteId).SingleOrDefault();
-                if (Arch.UserId == userid)
-                {
-                    var archieve = this.notesBL.Archive(NoteId);
-                    return this.Ok(new { success = true, message = "Notes Archieve Successful" });
-                }
-                else
-                {
-                    return this.Unauthorized(new { Success = false, message = "Not a user" });
-                }
+                var archieve = this.notesBL.Archive(NoteId);
+                return this.Ok(archieve);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return this.BadRequest(new { success = false, message = "Notes Not Archieved" });
+                return this.BadRequest(e.Message);
             }
         }
         [HttpPut]

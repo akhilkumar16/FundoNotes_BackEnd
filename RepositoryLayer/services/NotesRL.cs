@@ -51,10 +51,16 @@ namespace RepositoryLayer.services
                 throw;
             }
         }
-        public List<Notes> GetAllNotes(long UserId)
+        public List<Notes> GetAllNotes(long userid)
         {
-            this.fundoContext.SaveChanges();
-            return this.fundoContext.Notestables.ToList();
+            try
+            {
+                return this.fundoContext.Notestables.ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
         public List<Notes> GetNote(long NotesId)
         {
