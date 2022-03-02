@@ -27,21 +27,6 @@ namespace BusinessLayer.services
                 throw;
             }
         }
-
-        public string Archieve(long NoteId)
-        {
-            try
-            {
-                return notesRL.Archieve(NoteId);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            
-        }
-
         public string DeleteNote(int Noteid)
         {
             try

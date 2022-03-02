@@ -110,27 +110,5 @@ namespace RepositoryLayer.services
                 return null;
             }
         }
-        public string Archieve(long NoteId)
-        {
-            try
-            {
-                var archieve = fundoContext.Notestables.Where(Arch => Arch.Id == NoteId).SingleOrDefault();
-                if(archieve != null)
-                {
-                    archieve.Archive = true;
-                    this.fundoContext.SaveChanges();
-                    return "Notes Archieved";
-                }
-                else
-                {
-                    return "Not Archieved";
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
     }
 }

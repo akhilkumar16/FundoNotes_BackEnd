@@ -75,19 +75,5 @@ namespace Fundonotes.Controllers
                 return this.BadRequest();
             }
         }
-        [HttpPut]
-        [Route("archive")]
-        public IActionResult Archieve(long NoteId)
-        {
-            try
-            {
-                var archieve =this.notesBL.Archieve(NoteId);
-                return this.Ok(archieve);
-            }
-            catch (Exception)
-            {
-                return this.BadRequest();
-            }
-        }
     }
 }
