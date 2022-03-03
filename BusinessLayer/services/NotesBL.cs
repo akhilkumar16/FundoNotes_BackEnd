@@ -58,6 +58,19 @@ namespace BusinessLayer.services
             }
         }
 
+        public bool DeleteImage(long NoteId)
+        {
+            try
+            {
+                return notesRL.DeleteImage(NoteId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public string DeleteNote(long NoteId)
         {
             try

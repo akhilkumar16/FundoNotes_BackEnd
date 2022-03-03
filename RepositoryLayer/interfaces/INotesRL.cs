@@ -22,7 +22,7 @@ namespace RepositoryLayer.interfaces
         public string Trash(long NoteId);
         public string Color(long NoteId, string addcolor);
         public bool Image(IFormFile imageURL, long NoteId);
-        public bool DeleteNoteBgImage(long NoteId);
+        public bool DeleteImage(long NoteId);
 
 
     }

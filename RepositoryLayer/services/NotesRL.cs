@@ -8,13 +8,20 @@ using RepositoryLayer.entities;
 using RepositoryLayer.interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 
 namespace RepositoryLayer.services
 {
+    /// <summary>
+    /// Notes class interfaces connection
+    /// </summary>
     public class NotesRL : INotesRL
     {
+        /// <summary>
+        /// Fundocontext private variable
+        /// </summary>
         private readonly FundoContext fundoContext; //context class is used to query or save data to the database.
         IConfiguration _Toolsettings;  //IConfiguration interface is used to read Settings and Connection Strings from AppSettings.
         public NotesRL(FundoContext fundoContext, IConfiguration Toolsettings)
@@ -22,6 +29,12 @@ namespace RepositoryLayer.services
             this.fundoContext = fundoContext;
             _Toolsettings = Toolsettings;
         }
+        /// <summary>
+        /// Creates Notes 
+        /// </summary>
+        /// <param name="notesmodel"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public bool AddNotes(Notesmodel notesmodel, long userId)
         {
             try
@@ -54,7 +67,12 @@ namespace RepositoryLayer.services
                 throw;
             }
         }
-        public List<Notes> GetAllNotes(long userid)
+        /// <summary>
+        /// All Notes by userId
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public List<Notes> GetAllNotes(long userId)
         {
             try
             {
@@ -65,6 +83,11 @@ namespace RepositoryLayer.services
                 throw;
             }
         }
+        /// <summary>
+        /// All Notes by Note Id
+        /// </summary>
+        /// <param name="NotesId"></param>
+        /// <returns></returns>
         public List<Notes> GetNote(long NotesId)
         {
             var listNote = fundoContext.Notestables.Where(list => list.NoteId == NotesId).SingleOrDefault();
@@ -74,7 +97,11 @@ namespace RepositoryLayer.services
             }
             return null;
         }
-
+        /// <summary>
+        /// Modifies the existing Note
+        /// </summary>
+        /// <param name="notesUpdatemodel"></param>
+        /// <returns></returns>
         public string UpdateNote(Notesmodel notesUpdatemodel)
         {
             try
@@ -104,6 +131,11 @@ namespace RepositoryLayer.services
             }
 
         }
+        /// <summary>
+        /// Deletes total notes by Note Id
+        /// </summary>
+        /// <param name="NoteId"></param>
+        /// <returns></returns>
         public string DeleteNote(long NoteId)
         {
             var deletenote = fundoContext.Notestables.Where(del => del.NoteId == NoteId).SingleOrDefault();
@@ -118,6 +150,11 @@ namespace RepositoryLayer.services
                 return null;
             }
         }
+        /// <summary>
+        /// Hides the note
+        /// </summary>
+        /// <param name="NoteId"></param>
+        /// <returns></returns>
         public string Archive(long NoteId)
         {
             var result = this.fundoContext.Notestables.Where(arch => arch.NoteId == NoteId).SingleOrDefault();
@@ -132,6 +169,11 @@ namespace RepositoryLayer.services
                 return null;
             }
         }
+        /// <summary>
+        /// Unhides the note
+        /// </summary>
+        /// <param name="NoteId"></param>
+        /// <returns></returns>
         public string UnArchive(long NoteId)
         {
             var result = this.fundoContext.Notestables.Where(arch => arch.NoteId == NoteId && arch.Archive == true).SingleOrDefault();
@@ -146,6 +188,11 @@ namespace RepositoryLayer.services
                 return null;
             }
         }
+        /// <summary>
+        /// Note get pinned
+        /// </summary>
+        /// <param name="NoteId"></param>
+        /// <returns></returns>
         public string Pin(long NoteId)
         {
             var result = this.fundoContext.Notestables.Where(pin => pin.NoteId == NoteId).SingleOrDefault();
@@ -160,6 +207,11 @@ namespace RepositoryLayer.services
                 return null;
             }
         }
+        /// <summary>
+        /// Note gets Unpinned
+        /// </summary>
+        /// <param name="NoteId"></param>
+        /// <returns></returns>
         public string UnPin(long NoteId)
         {
             var result = this.fundoContext.Notestables.Where(Upin => Upin.NoteId == NoteId && Upin.Pin == true).SingleOrDefault();
@@ -174,6 +226,11 @@ namespace RepositoryLayer.services
                 return null;
             }
         }
+        /// <summary>
+        /// Deleted note by trash
+        /// </summary>
+        /// <param name="NoteId"></param>
+        /// <returns></returns>
         public string Trash(long NoteId)
         {
             var TrashNote = this.fundoContext.Notestables.Where(X => X.NoteId == NoteId).SingleOrDefault();
@@ -199,6 +256,12 @@ namespace RepositoryLayer.services
 
             }
         }
+        /// <summary>
+        /// A color gets added
+        /// </summary>
+        /// <param name="NoteId"></param>
+        /// <param name="addcolor"></param>
+        /// <returns></returns>
         public string Color(long NoteId, string addcolor)
         {
 
@@ -218,6 +281,12 @@ namespace RepositoryLayer.services
             }
             throw new Exception();
         }
+        /// <summary>
+        /// Uploads a Image
+        /// </summary>
+        /// <param name="imageURL"></param>
+        /// <param name="NoteId"></param>
+        /// <returns></returns>
         public bool Image(IFormFile imageURL, long NoteId)
         {
             try
@@ -256,7 +325,12 @@ namespace RepositoryLayer.services
                 throw;
             }
         }
-        public bool DeleteNoteBgImage(long NoteId)
+        /// <summary>
+        /// Delete the uploaded Image
+        /// </summary>
+        /// <param name="NoteId"></param>
+        /// <returns></returns>
+        public bool DeleteImage(long NoteId)
         {
             try
             {
@@ -265,12 +339,11 @@ namespace RepositoryLayer.services
                     var note = this.fundoContext.Notestables.Where(x => x.NoteId == NoteId).SingleOrDefault();
                     if (note != null)
                     {
-                        note.Image = "Image";
+                        note.Image = "Please select Image ";
                         note.ModifiedAt = DateTime.Now;
                         this.fundoContext.SaveChanges();
-                        return true;
+                        return false;
                     }
-                    return false;
                 }
                 return false;
             }

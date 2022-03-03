@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace Fundonotes.Controllers
 {
+    /// <summary>
+    /// Notes controller connted with base controller
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     [Authorize] //user to grant and restrict permissions on Web pages.
@@ -23,6 +26,11 @@ namespace Fundonotes.Controllers
         {
             this.notesBL = notesBL;
         }
+        /// <summary>
+        /// Create opration Api
+        /// </summary>
+        /// <param name="notesmodel"></param>
+        /// <returns></returns>
         [HttpPost]// POST is to send and receive data.
         [Route("Create")]
         public IActionResult AddNotes(Notesmodel notesmodel)
@@ -38,6 +46,11 @@ namespace Fundonotes.Controllers
                 return this.BadRequest(new { success = false, message = e.InnerException });
             }
         }
+        /// <summary>
+        /// Update operation Api
+        /// </summary>
+        /// <param name="notesUpdatemodel"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("update")]
         public IActionResult UpdateNotes(Notesmodel notesUpdatemodel)
@@ -53,6 +66,10 @@ namespace Fundonotes.Controllers
                 return this.BadRequest(new { success = false, message = "Notes Not Updated" });
             }
         }
+        /// <summary>
+        /// Read operation Api
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("GetAll")]
         public IActionResult GetAllNotes()
@@ -68,6 +85,11 @@ namespace Fundonotes.Controllers
                 return BadRequest();
             }
         }
+        /// <summary>
+        /// Read opeartion Api by note Id
+        /// </summary>
+        /// <param name="NoteId"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("GetById")]
         public IActionResult Getnote(long NoteId)
@@ -83,6 +105,11 @@ namespace Fundonotes.Controllers
                 return BadRequest();
             }
         }
+        /// <summary>
+        /// Delete operation Api ( Delete total )
+        /// </summary>
+        /// <param name="NoteId"></param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("Delete")]
         public IActionResult DeleteNote(long NoteId)
@@ -98,6 +125,11 @@ namespace Fundonotes.Controllers
                 return this.BadRequest();
             }
         }
+        /// <summary>
+        /// Api for archieve
+        /// </summary>
+        /// <param name="NoteId"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("Archive")]
         public IActionResult Archieve(long NoteId)
@@ -112,6 +144,11 @@ namespace Fundonotes.Controllers
                 return this.BadRequest(e.Message);
             }
         }
+        /// <summary>
+        /// Api for Unarchieve
+        /// </summary>
+        /// <param name="NoteId"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("Unarchive")]
         public IActionResult UnArchieve(long NoteId)
@@ -126,6 +163,11 @@ namespace Fundonotes.Controllers
                 return this.BadRequest(new { success = false, message = "Notes Not UnArchieved" });
             }
         }
+        /// <summary>
+        /// Api for note getting pinned 
+        /// </summary>
+        /// <param name="NoteId"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("pin")]
         public IActionResult Pin(long NoteId)
@@ -140,6 +182,11 @@ namespace Fundonotes.Controllers
                 return this.BadRequest(new { success = false, message = "Notes Not pinned" });
             }
         }
+        /// <summary>
+        /// Api for Unpin
+        /// </summary>
+        /// <param name="NoteId"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("unpin")]
         public IActionResult UnPin(long NoteId)
@@ -154,6 +201,11 @@ namespace Fundonotes.Controllers
                 return this.BadRequest(new { success = false, message = "Notes Not pinned" });
             }
         }
+        /// <summary>
+        /// Note moves to trash on deletion  
+        /// </summary>
+        /// <param name="NoteId"></param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("Trash")]
         public IActionResult TrashNote(long NoteId)
@@ -169,6 +221,12 @@ namespace Fundonotes.Controllers
                 return this.BadRequest(new { success = false, message = "Notes UnTrashed" });
             }
         }
+        /// <summary>
+        /// Api to add color
+        /// </summary>
+        /// <param name="NoteId"></param>
+        /// <param name="addcolor"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("color")]
         public IActionResult AddColor(long NoteId, string addcolor)
@@ -184,6 +242,12 @@ namespace Fundonotes.Controllers
                 return this.BadRequest(new { success = false, message = " Color not Added" });
             }
         }
+        /// <summary>
+        /// Api to upload Image
+        /// </summary>
+        /// <param name="imageURL"></param>
+        /// <param name="NoteId"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("Image")]
         public IActionResult Image(IFormFile imageURL, long NoteId)
@@ -197,6 +261,26 @@ namespace Fundonotes.Controllers
             catch (Exception)
             {
                 return this.BadRequest(new { success = false, message = "Image Unsuccessfull" });
+            }
+        }
+        /// <summary>
+        /// Deletes Image
+        /// </summary>
+        /// <param name="NoteId"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("DeleteImage")]
+        public IActionResult DeleteImage(long NoteId)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var upload = this.notesBL.DeleteImage( NoteId);
+                return this.Ok(new { success = true, message = " Image Deleted Successful", data = upload });
+            }
+            catch (Exception)
+            {
+                return this.BadRequest(new { success = false, message = "Image Not Deleted Unsuccessfull" });
             }
         }
     }

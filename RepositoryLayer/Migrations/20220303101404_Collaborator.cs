@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RepositoryLayer.Migrations
 {
-    public partial class INitial : Migration
+    public partial class Collaborator : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,8 +52,45 @@ namespace RepositoryLayer.Migrations
                         column: x => x.UserId,
                         principalTable: "UserTables",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Colltables",
+                columns: table => new
+                {
+                    CollId = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CollEmail = table.Column<string>(nullable: true),
+                    NoteId = table.Column<long>(nullable: false),
+                    UserId = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Colltables", x => x.CollId);
+                    table.ForeignKey(
+                        name: "FK_Colltables_Notestables_NoteId",
+                        column: x => x.NoteId,
+                        principalTable: "Notestables",
+                        principalColumn: "NoteId",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_Colltables_UserTables_UserId",
+                        column: x => x.UserId,
+                        principalTable: "UserTables",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Colltables_NoteId",
+                table: "Colltables",
+                column: "NoteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Colltables_UserId",
+                table: "Colltables",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notestables_UserId",
@@ -63,6 +100,9 @@ namespace RepositoryLayer.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Colltables");
+
             migrationBuilder.DropTable(
                 name: "Notestables");
 
