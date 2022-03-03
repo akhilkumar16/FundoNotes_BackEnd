@@ -1,4 +1,7 @@
-﻿using CommonLayer.models;
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using CommonLayer.models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using RepositoryLayer.context;
 using RepositoryLayer.entities;
@@ -179,13 +182,13 @@ namespace RepositoryLayer.services
                 if (TrashNote.Delete == false)
                 {
                     TrashNote.Delete = true;
-                    this.fundoContext.SaveChangesAsync();
+                    this.fundoContext.SaveChanges();
                     return "Notes trashed";
                 }
                 if (TrashNote.Delete == true)
                 {
                     TrashNote.Delete = false;
-                    this.fundoContext.SaveChangesAsync();
+                    this.fundoContext.SaveChanges();
                     return "Notes Untrashed";
                 }
                 return null;
@@ -194,6 +197,86 @@ namespace RepositoryLayer.services
             {
                 return " No Note";
 
+            }
+        }
+        public string Color(long NoteId, string addcolor)
+        {
+
+            var color = this.fundoContext.Notestables.Where(c => c.NoteId == NoteId).SingleOrDefault();
+            if (color != null)
+            {
+                if (addcolor != null)
+                {
+                    color.Color = addcolor;
+                    this.fundoContext.Notestables.Update(color);
+                    return this.fundoContext.SaveChanges().ToString();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            throw new Exception();
+        }
+        public bool Image(IFormFile imageURL, long NoteId)
+        {
+            try
+            {
+                if (NoteId > 0)
+                {
+                    var note = this.fundoContext.Notestables.Where(x => x.NoteId == NoteId).SingleOrDefault();
+                    if (note != null)
+                    {
+                        Account acc = new Account(
+                            _Toolsettings["Cloudinary:cloud_name"],
+                            _Toolsettings["Cloudinary:api_key"],
+                            _Toolsettings["Cloudinary:api_secret"]
+                            );
+                        Cloudinary Cld = new Cloudinary(acc);
+                        var path = imageURL.OpenReadStream();
+                        ImageUploadParams upLoadParams = new ImageUploadParams()
+                        {
+                            File = new FileDescription(imageURL.FileName, path)
+                        };
+                        var UploadResult = Cld.Upload(upLoadParams);
+                        note.Image = UploadResult.Url.ToString();
+                        note.ModifiedAt = DateTime.Now;
+                        this.fundoContext.SaveChanges();
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public bool DeleteNoteBgImage(long NoteId)
+        {
+            try
+            {
+                if (NoteId > 0)
+                {
+                    var note = this.fundoContext.Notestables.Where(x => x.NoteId == NoteId).SingleOrDefault();
+                    if (note != null)
+                    {
+                        note.Image = "Image";
+                        note.ModifiedAt = DateTime.Now;
+                        this.fundoContext.SaveChanges();
+                        return true;
+                    }
+                    return false;
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
     }

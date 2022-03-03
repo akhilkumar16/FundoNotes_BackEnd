@@ -1,5 +1,7 @@
 ﻿using BusinessLayer.interfaces;
+using CloudinaryDotNet.Actions;
 using CommonLayer.models;
+using Microsoft.AspNetCore.Http;
 using RepositoryLayer.entities;
 using RepositoryLayer.interfaces;
 using System;
@@ -15,6 +17,7 @@ namespace BusinessLayer.services
         {
             this.notesRL = notesRL;
         }
+
         public bool AddNotes(Notesmodel notesmodel,long userId)
         {
             try
@@ -34,6 +37,19 @@ namespace BusinessLayer.services
             {
                 return notesRL.Archive(NoteId);
 
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public string Color(long NoteId, string addcolor)
+        {
+            try
+            {
+                return notesRL.Color(NoteId, addcolor);
             }
             catch (Exception)
             {
@@ -75,6 +91,19 @@ namespace BusinessLayer.services
             {
                 return notesRL.GetNote(NoteId);
 
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public bool Image(IFormFile imageURL, long NoteId)
+        {
+            try
+            {
+                return notesRL.Image(imageURL, NoteId);
             }
             catch (Exception)
             {
@@ -149,5 +178,6 @@ namespace BusinessLayer.services
             }
             
         }
+        
     }
 }

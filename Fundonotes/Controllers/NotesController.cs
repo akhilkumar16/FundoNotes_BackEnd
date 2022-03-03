@@ -24,7 +24,7 @@ namespace Fundonotes.Controllers
             this.notesBL = notesBL;
         }
         [HttpPost]// POST is to send and receive data.
-        [Route("CreateNotes")]
+        [Route("Create")]
         public IActionResult AddNotes(Notesmodel notesmodel)
         {
             try
@@ -39,7 +39,7 @@ namespace Fundonotes.Controllers
             }
         }
         [HttpPut]
-        [Route("updateNotes")]
+        [Route("update")]
         public IActionResult UpdateNotes(Notesmodel notesUpdatemodel)
         {
             try
@@ -54,7 +54,7 @@ namespace Fundonotes.Controllers
             }
         }
         [HttpGet]
-        [Route("GetAllNotes")]
+        [Route("GetAll")]
         public IActionResult GetAllNotes()
         {
             try
@@ -69,7 +69,7 @@ namespace Fundonotes.Controllers
             }
         }
         [HttpGet]
-        [Route("GetNotesId")]
+        [Route("GetById")]
         public IActionResult Getnote(long NoteId)
         {
             try
@@ -84,7 +84,7 @@ namespace Fundonotes.Controllers
             }
         }
         [HttpDelete]
-        [Route("Deletenote")]
+        [Route("Delete")]
         public IActionResult DeleteNote(long NoteId)
         {
             try
@@ -155,7 +155,7 @@ namespace Fundonotes.Controllers
             }
         }
         [HttpDelete]
-        [Route("Trashnote")]
+        [Route("Trash")]
         public IActionResult TrashNote(long NoteId)
         {
             try
@@ -167,6 +167,36 @@ namespace Fundonotes.Controllers
             catch (Exception)
             {
                 return this.BadRequest(new { success = false, message = "Notes UnTrashed" });
+            }
+        }
+        [HttpPut]
+        [Route("color")]
+        public IActionResult AddColor(long NoteId, string addcolor)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var color = this.notesBL.Color(NoteId, addcolor);
+                return Ok(new { success = true, message = "Color Added", data = color });
+            }
+            catch (Exception)
+            {
+                return this.BadRequest(new { success = false, message = " Color not Added" });
+            }
+        }
+        [HttpPut]
+        [Route("Image")]
+        public IActionResult Image(IFormFile imageURL, long NoteId)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var upload = this.notesBL.Image(imageURL,NoteId);
+                return this.Ok(new { success = true, message = " Image Successful",data = upload});
+            }
+            catch (Exception)
+            {
+                return this.BadRequest(new { success = false, message = "Image Unsuccessfull" });
             }
         }
     }

@@ -1,4 +1,6 @@
-﻿using CommonLayer.models;
+﻿using CloudinaryDotNet.Actions;
+using CommonLayer.models;
+using Microsoft.AspNetCore.Http;
 using RepositoryLayer.entities;
 using System;
 using System.Collections.Generic;
@@ -18,6 +20,9 @@ namespace RepositoryLayer.interfaces
         public string Pin(long NoteId);
         public string UnPin(long NoteId);
         public string Trash(long NoteId);
+        public string Color(long NoteId, string addcolor);
+        public bool Image(IFormFile imageURL, long NoteId);
+        public bool DeleteNoteBgImage(long NoteId);
 
 
     }
