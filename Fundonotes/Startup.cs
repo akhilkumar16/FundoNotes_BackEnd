@@ -94,6 +94,8 @@ namespace Fundonotes
                 services.AddTransient<IUserRL, UserRL>(); //services are created each time when they are requested for Repository Layer.
                 services.AddTransient<INotesBL, NotesBL>();
                 services.AddTransient<INotesRL, NotesRL>();
+                services.AddTransient<ICollaboratorBL,CollaboratorBL>();
+                services.AddTransient<ICollaboratorRL, CollaboratorRL>();
             }
         }
 
