@@ -12,17 +12,24 @@ using System.Threading.Tasks;
 
 namespace Fundonotes.Controllers
 {
+    /// <summary>
+    /// Collaborator controller connected with base controller
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
     public class CollaboratorController : ControllerBase
     {
         private readonly ICollaboratorBL collaboratorBL; // can only be assigned a value from within the constructor(s) of a class.
-        private readonly FundoContext fundocontext;
         public CollaboratorController(ICollaboratorBL collaboratorBL)
         {
             this.collaboratorBL = collaboratorBL;
         }
+        /// <summary>
+        /// Add notes to collaborator
+        /// </summary>
+        /// <param name="collaborator"></param>
+        /// <returns></returns>
         [HttpPost]// POST is to send and receive data.
         [Route("Create")]
         public IActionResult CollaboratorNotes(Collaboratormodel collaborator)
@@ -40,6 +47,25 @@ namespace Fundonotes.Controllers
             catch (Exception exception)
             {
                 return BadRequest(exception.Message);
+            }
+        }
+        /// <summary>
+        /// Deleting the note from collaborator
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("delete")]
+        public IActionResult DeleteCollaborator(long NoteId)
+        {
+            try
+            {
+                var Delete = this.collaboratorBL.DeleteCollaborator(NoteId);
+                return Ok(new { Delete });
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(e.Message);
             }
         }
     }

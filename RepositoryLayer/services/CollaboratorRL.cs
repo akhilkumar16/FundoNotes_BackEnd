@@ -47,5 +47,19 @@ namespace RepositoryLayer.services
                 return false;;
             }
         }
+        public string DeleteCollaborator(long NoteId)
+        {
+            try
+            {
+                var delete = this.fundoContext.Colltables.Where(del => del.NoteId == NoteId).SingleOrDefault();
+                this.fundoContext.Colltables.Remove(delete);
+                this.fundoContext.SaveChanges();
+                return "Collaborator Deleted Succesfully";
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

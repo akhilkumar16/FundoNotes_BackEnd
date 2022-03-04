@@ -9,6 +9,7 @@ namespace RepositoryLayer.interfaces
     public interface ICollaboratorRL
     {
         public bool AddCollaboratorToNotes(Collaboratormodel collaborator);
+        public string DeleteCollaborator(long NoteId);
 
     }
 }

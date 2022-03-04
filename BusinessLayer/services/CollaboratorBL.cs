@@ -28,5 +28,18 @@ namespace BusinessLayer.services
                 throw;
             }
         }
+
+        public string DeleteCollaborator(long NoteId)
+        {
+            try
+            {
+                return collaboratorRL.DeleteCollaborator(NoteId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

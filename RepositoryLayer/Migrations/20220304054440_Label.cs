@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RepositoryLayer.Migrations
 {
-    public partial class Collaborator : Migration
+    public partial class Label : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -82,6 +82,33 @@ namespace RepositoryLayer.Migrations
                         onDelete: ReferentialAction.NoAction);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Labeltables",
+                columns: table => new
+                {
+                    LabelId = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LabelName = table.Column<string>(nullable: true),
+                    NoteId = table.Column<long>(nullable: false),
+                    UserId = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Labeltables", x => x.LabelId);
+                    table.ForeignKey(
+                        name: "FK_Labeltables_Notestables_NoteId",
+                        column: x => x.NoteId,
+                        principalTable: "Notestables",
+                        principalColumn: "NoteId",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_Labeltables_UserTables_UserId",
+                        column: x => x.UserId,
+                        principalTable: "UserTables",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Colltables_NoteId",
                 table: "Colltables",
@@ -90,6 +117,16 @@ namespace RepositoryLayer.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Colltables_UserId",
                 table: "Colltables",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Labeltables_NoteId",
+                table: "Labeltables",
+                column: "NoteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Labeltables_UserId",
+                table: "Labeltables",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -102,6 +139,9 @@ namespace RepositoryLayer.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Colltables");
+
+            migrationBuilder.DropTable(
+                name: "Labeltables");
 
             migrationBuilder.DropTable(
                 name: "Notestables");
