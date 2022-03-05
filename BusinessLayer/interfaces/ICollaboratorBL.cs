@@ -10,6 +10,7 @@ namespace BusinessLayer.interfaces
     {
         public bool AddCollaboratorToNotes(Collaboratormodel collaborator);
         public string DeleteCollaborator(long NoteId);
+        public List<Collaborator> GetNote(long NoteId);
 
     }
 }

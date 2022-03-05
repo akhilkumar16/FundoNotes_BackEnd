@@ -39,6 +39,7 @@ namespace RepositoryLayer.services
         {
             try
             {
+                //entities class instance 
                 Notes fundonotes = new Notes();
                 fundonotes.UserId = userId;
                 fundonotes.Title = notesmodel.Title;
@@ -49,7 +50,9 @@ namespace RepositoryLayer.services
                 fundonotes.Backgroundcolour = notesmodel.Backgroundcolour;
                 fundonotes.Archive = notesmodel.Archive;
                 fundonotes.Pin = notesmodel.Pin;
+                fundonotes.ModifiedAt = DateTime.Now;
                 fundonotes.CreatedAt = DateTime.Now;
+                // stores in DataBase
                 fundoContext.Notestables.Add(fundonotes);
                 var result = this.fundoContext.SaveChanges();
                 if (result > 0)
@@ -90,6 +93,7 @@ namespace RepositoryLayer.services
         /// <returns></returns>
         public List<Notes> GetNote(long NotesId)
         {
+            // checking of Notes Db
             var listNote = fundoContext.Notestables.Where(list => list.NoteId == NotesId).SingleOrDefault();
             if (listNote != null)
             {
@@ -106,6 +110,7 @@ namespace RepositoryLayer.services
         {
             try
             {
+                //checking with the notes db
                 var result = fundoContext.Notestables.Where(X => X.NoteId == notesUpdatemodel.NotesId).SingleOrDefault();
                 if (result != null)
                 {
@@ -113,7 +118,6 @@ namespace RepositoryLayer.services
                     result.Discription = notesUpdatemodel.Discription;
                     result.ModifiedAt = DateTime.Now;
                     result.Color = notesUpdatemodel.Color;
-
                     this.fundoContext.SaveChanges();
                     return "Modified";
                 }
@@ -138,9 +142,11 @@ namespace RepositoryLayer.services
         /// <returns></returns>
         public string DeleteNote(long NoteId)
         {
+            // checking of noteid in db
             var deletenote = fundoContext.Notestables.Where(del => del.NoteId == NoteId).SingleOrDefault();
             if (deletenote != null)
             {
+                // deletes in the database
                 fundoContext.Notestables.Remove(deletenote);
                 this.fundoContext.SaveChanges();
                 return "Notes Deleted Successfully";
@@ -157,6 +163,7 @@ namespace RepositoryLayer.services
         /// <returns></returns>
         public string Archive(long NoteId)
         {
+            // returns true noteid == noteid 
             var result = this.fundoContext.Notestables.Where(arch => arch.NoteId == NoteId).SingleOrDefault();
             if (result != null)
             {
@@ -282,12 +289,12 @@ namespace RepositoryLayer.services
             throw new Exception();
         }
         /// <summary>
-        /// Uploads a Image
+        /// Uploads a Image --Method for uploading image from local host to cloudinary
         /// </summary>
         /// <param name="imageURL"></param>
         /// <param name="NoteId"></param>
         /// <returns></returns>
-        public bool Image(IFormFile imageURL, long NoteId)
+        public bool Image(IFormFile imageURL, long NoteId)// IFormFile-interface that represents transmitted files in an HTTP request.
         {
             try
             {
@@ -297,17 +304,18 @@ namespace RepositoryLayer.services
                     if (note != null)
                     {
                         Account acc = new Account(
-                            _Toolsettings["Cloudinary:cloud_name"],
+                            //Iconfiguration --_Toolsettings
+                            _Toolsettings["Cloudinary:cloud_name"],//Declare a Cloudinary service
                             _Toolsettings["Cloudinary:api_key"],
-                            _Toolsettings["Cloudinary:api_secret"]
+                            _Toolsettings["Cloudinary:api_secret"]// stored in app.json file
                             );
                         Cloudinary Cld = new Cloudinary(acc);
-                        var path = imageURL.OpenReadStream();
-                        ImageUploadParams upLoadParams = new ImageUploadParams()
+                        var path = imageURL.OpenReadStream();//extract the needed information from the URL
+                        ImageUploadParams upLoadParams = new ImageUploadParams()//save an image to cloudinary
                         {
                             File = new FileDescription(imageURL.FileName, path)
                         };
-                        var UploadResult = Cld.Upload(upLoadParams);
+                        var UploadResult = Cld.Upload(upLoadParams); //upload to cloudinary 
                         note.Image = UploadResult.Url.ToString();
                         note.ModifiedAt = DateTime.Now;
                         this.fundoContext.SaveChanges();

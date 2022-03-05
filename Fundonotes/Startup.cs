@@ -96,6 +96,8 @@ namespace Fundonotes
                 services.AddTransient<INotesRL, NotesRL>();
                 services.AddTransient<ICollaboratorBL,CollaboratorBL>();
                 services.AddTransient<ICollaboratorRL, CollaboratorRL>();
+                services.AddTransient<ILabelBL, LabelBL>();
+                services.AddTransient<ILabelRL, LabelRL>();
             }
         }
 

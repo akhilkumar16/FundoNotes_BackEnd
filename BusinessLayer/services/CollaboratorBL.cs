@@ -41,5 +41,18 @@ namespace BusinessLayer.services
                 throw;
             }
         }
+
+        public List<Collaborator> GetNote(long NoteId)
+        {
+            try
+            {
+                return collaboratorRL.GetNote(NoteId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

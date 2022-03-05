@@ -37,9 +37,10 @@ namespace Fundonotes.Controllers
         {
             try
             {
+                //checking if the user has a claim to access.
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
                 var result = this.notesBL.AddNotes(notesmodel,userid);
-                return this.Ok(new { success = true, message = "Notes Added Successful", data = result });
+                return this.Ok(new { success = true, message = "Notes Added Successful", data = notesmodel });
             }
             catch (Exception e)
             {
@@ -57,9 +58,10 @@ namespace Fundonotes.Controllers
         {
             try
             {
+                //checking if the user has a claim to access.
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
                 var result = this.notesBL.UpdateNote(notesUpdatemodel,userid);
-                return this.Ok(new { success = true, message = "Notes Updated Successful", data = result });
+                return this.Ok(new { success = true, message = "Notes Updated Successful", data = notesUpdatemodel });
             }
             catch (Exception)
             {
@@ -76,6 +78,7 @@ namespace Fundonotes.Controllers
         {
             try
             {
+                //checking if the user has a claim to access.
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
                 IEnumerable<Notes> notes = this.notesBL.GetAllNotes(userid);
                 return Ok(notes);
@@ -96,6 +99,7 @@ namespace Fundonotes.Controllers
         {
             try
             {
+                //checking if the user has a claim to access.
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
                 List<Notes> notes = this.notesBL.GetNote(NoteId);
                 return Ok(notes);
@@ -116,6 +120,7 @@ namespace Fundonotes.Controllers
         {
             try
             {
+                //checking if the user has a claim to access.
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
                 var delete = this.notesBL.DeleteNote(NoteId);
                 return this.Ok(delete);
@@ -212,6 +217,7 @@ namespace Fundonotes.Controllers
         {
             try
             {
+                //checking if the user has a claim to access.
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
                 var trash = this.notesBL.Trash(NoteId);
                 return this.Ok(new { success = true, message = "Notes Trashed Successful", data = trash });
@@ -233,6 +239,7 @@ namespace Fundonotes.Controllers
         {
             try
             {
+                //checking if the user has a claim to access.
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
                 var color = this.notesBL.Color(NoteId, addcolor);
                 return Ok(new { success = true, message = "Color Added", data = color });
@@ -254,6 +261,7 @@ namespace Fundonotes.Controllers
         {
             try
             {
+                //checking if the user has a claim to access.
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
                 var upload = this.notesBL.Image(imageURL,NoteId);
                 return this.Ok(new { success = true, message = " Image Successful",data = upload});
@@ -274,6 +282,7 @@ namespace Fundonotes.Controllers
         {
             try
             {
+                //checking if the user has a claim to access.
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
                 var upload = this.notesBL.DeleteImage( NoteId);
                 return this.Ok(new { success = true, message = " Image Deleted Successful", data = upload });
