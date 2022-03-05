@@ -6,7 +6,6 @@ namespace CommonLayer.models
 {
     public class Notesmodel
     {
-        public long NotesId { get; set; }
         public string Title { get; set; }
         public string Discription { get; set; }
         public string Image { get; set; }

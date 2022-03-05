@@ -106,12 +106,12 @@ namespace RepositoryLayer.services
         /// </summary>
         /// <param name="notesUpdatemodel"></param>
         /// <returns></returns>
-        public string UpdateNote(Notesmodel notesUpdatemodel)
+        public string UpdateNote(Notesmodel notesUpdatemodel ,long NoteId )
         {
             try
             {
                 //checking with the notes db
-                var result = fundoContext.Notestables.Where(X => X.NoteId == notesUpdatemodel.NotesId).SingleOrDefault();
+                var result = fundoContext.Notestables.Where(X => X.NoteId == NoteId).SingleOrDefault();
                 if (result != null)
                 {
                     result.Title = notesUpdatemodel.Title;

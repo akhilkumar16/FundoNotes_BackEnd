@@ -178,11 +178,11 @@ namespace BusinessLayer.services
             }
         }
 
-        public string UpdateNote(Notesmodel notesUpdatemodel, long userId)
+        public string UpdateNote(Notesmodel notesUpdatemodel, long NoteId)
         {
             try
             {
-                return notesRL.UpdateNote(notesUpdatemodel);
+                return notesRL.UpdateNote(notesUpdatemodel, NoteId);
             }
             catch (Exception)
             {

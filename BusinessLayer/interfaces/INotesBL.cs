@@ -11,7 +11,7 @@ namespace BusinessLayer.interfaces
     public interface INotesBL
     {
         public bool AddNotes(Notesmodel notesmodel,long userId);
-        public string UpdateNote(Notesmodel notesUpdatemodel, long userId);
+        public string UpdateNote(Notesmodel notesUpdatemodel, long NoteId);
         public List<Notes> GetAllNotes(long UserId);
         public List<Notes> GetNote(long NoteId);
         public string DeleteNote(long NoteId);
