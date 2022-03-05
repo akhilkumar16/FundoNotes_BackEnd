@@ -38,7 +38,7 @@ namespace RepositoryLayer.services
                 newUser.FristName = userRegmodel.FirstName; // line 35 - 38 calling the registration model class to get and set the values.
                 newUser.LastName = userRegmodel.LastName;
                 newUser.Email = userRegmodel.Email;
-                newUser.Password = userRegmodel.Password;
+                newUser.Password = HiddingPassword(userRegmodel.Password);
                 newUser.CreatedAt = DateTime.Now;
                 newUser.ModifiedAt = DateTime.Now;
                 fundoContext.UserTables.Add(newUser); // Add a user in the DB.
@@ -67,8 +67,9 @@ namespace RepositoryLayer.services
             try
             {
                 var Enteredlogin = this.fundoContext.UserTables.Where(X => X.Email == info.Email && X.Password == info.Password).FirstOrDefault();
-                // Above line is for Selecting User from a table with LINQ statements/expression
-                if (Enteredlogin !=null)
+                if (Decryptpass(Enteredlogin.Password) == info.Password) ;
+                    // Above line is for Selecting User from a table with LINQ statements/expression
+                    if (Enteredlogin !=null)
                 {
                     LoginResponseModel data = new LoginResponseModel(); // instance created for login response model class.
                     string token = GenerateSecurityToken(Enteredlogin.Email , Enteredlogin.UserId); // method for token creation.
@@ -164,6 +165,26 @@ namespace RepositoryLayer.services
 
                 throw;
             }
+        }
+        public string HiddingPassword(string password)
+        {
+            string enteredpassword = "Hide";
+            byte[] hide = new byte[password.Length];
+            hide = Encoding.UTF8.GetBytes(password);
+            enteredpassword = Convert.ToBase64String(hide);
+            return enteredpassword;
+        }
+        private string Decryptpass(string encryptpwd)
+        {
+            string decryptpwd = string.Empty;
+            UTF8Encoding encodepwd = new UTF8Encoding();
+            Decoder Decode = encodepwd.GetDecoder();
+            byte[] todecode_byte = Convert.FromBase64String(encryptpwd);
+            int charCount = Decode.GetCharCount(todecode_byte, 0, todecode_byte.Length);
+            char[] decoded_char = new char[charCount];
+            Decode.GetChars(todecode_byte, 0, todecode_byte.Length, decoded_char, 0);
+            decryptpwd = new String(decoded_char);
+            return decryptpwd;
         }
     }
 }
