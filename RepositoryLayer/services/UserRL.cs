@@ -38,7 +38,7 @@ namespace RepositoryLayer.services
                 newUser.FristName = userRegmodel.FirstName; // line 35 - 38 calling the registration model class to get and set the values.
                 newUser.LastName = userRegmodel.LastName;
                 newUser.Email = userRegmodel.Email;
-                newUser.Password = HiddingPassword(userRegmodel.Password);
+                newUser.Password = ConvertToEncrypt(userRegmodel.Password);
                 newUser.CreatedAt = DateTime.Now;
                 newUser.ModifiedAt = DateTime.Now;
                 fundoContext.UserTables.Add(newUser); // Add a user in the DB.
@@ -67,7 +67,7 @@ namespace RepositoryLayer.services
             try
             {
                 var Enteredlogin = this.fundoContext.UserTables.Where(X => X.Email == info.Email).FirstOrDefault();
-                if (Decryptpass(Enteredlogin.Password) == info.Password)
+                if (ConvertToDecrypt(Enteredlogin.Password) == info.Password)
                     // Above line is for Selecting User from a table with LINQ statements/expression
                 {
                     LoginResponseModel data = new LoginResponseModel(); // instance created for login response model class.
@@ -165,25 +165,23 @@ namespace RepositoryLayer.services
                 throw;
             }
         }
-        public string HiddingPassword(string password)
+        public static string key = "adsersybdhudjdjdHAGBHD";
+        public static string ConvertToEncrypt(string password)
         {
-            string enteredpassword = "Hide";
-            byte[] hide = new byte[password.Length];
-            hide = Encoding.UTF8.GetBytes(password);
-            enteredpassword = Convert.ToBase64String(hide);
-            return enteredpassword;
+            if (string.IsNullOrEmpty(password))
+                return "";
+                password += key;
+                var passwordBytes = Encoding.UTF8.GetBytes(password);
+                return Convert.ToBase64String(passwordBytes);
         }
-        private string Decryptpass(string encryptpwd)
+        private static string ConvertToDecrypt(string base64EncodeData)
         {
-            string decryptpwd = string.Empty;
-            UTF8Encoding encodepwd = new UTF8Encoding();
-            Decoder Decode = encodepwd.GetDecoder();
-            byte[] todecode_byte = Convert.FromBase64String(encryptpwd);
-            int charCount = Decode.GetCharCount(todecode_byte, 0, todecode_byte.Length);
-            char[] decoded_char = new char[charCount];
-            Decode.GetChars(todecode_byte, 0, todecode_byte.Length, decoded_char, 0);
-            decryptpwd = new String(decoded_char);
-            return decryptpwd;
+            if (string.IsNullOrEmpty(base64EncodeData))
+                return "";
+                var base64EncodeBytes = Convert.FromBase64String(base64EncodeData);
+                var result = Encoding.UTF8.GetString(base64EncodeBytes);
+                result = result.Substring(0, result.Length);
+                return result;
         }
         public List<User> GetAllUsers()
         {
