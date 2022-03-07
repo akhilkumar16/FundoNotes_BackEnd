@@ -48,10 +48,10 @@ namespace Fundonotes.Controllers
                 var result = userBL.UserLogin(logindata);
                 if (result != null)
                 {
-                    return this.Ok(new { success = true, message = "Login Successful", data = result }); // message.
+                    return this.Ok(new { success = true, message = "Login Successful", data = result.Email,result.Token }); // message.
                 }
                 else
-                    return this.BadRequest(new { success = false, message = "Login Unsuccessful" });
+                    return this.BadRequest(new { success = false, message = " Please enter correct password " });
             }
             catch (Exception)
             {

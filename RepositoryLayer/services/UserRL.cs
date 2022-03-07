@@ -66,10 +66,9 @@ namespace RepositoryLayer.services
         {
             try
             {
-                var Enteredlogin = this.fundoContext.UserTables.Where(X => X.Email == info.Email && X.Password == info.Password).FirstOrDefault();
-                if (Decryptpass(Enteredlogin.Password) == info.Password) ;
+                var Enteredlogin = this.fundoContext.UserTables.Where(X => X.Email == info.Email).FirstOrDefault();
+                if (Decryptpass(Enteredlogin.Password) == info.Password)
                     // Above line is for Selecting User from a table with LINQ statements/expression
-                    if (Enteredlogin !=null)
                 {
                     LoginResponseModel data = new LoginResponseModel(); // instance created for login response model class.
                     string token = GenerateSecurityToken(Enteredlogin.Email , Enteredlogin.UserId); // method for token creation.
