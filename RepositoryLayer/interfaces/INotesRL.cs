@@ -23,6 +23,7 @@ namespace RepositoryLayer.interfaces
         public string Color(long NoteId, string addcolor);
         public bool Image(IFormFile imageURL, long NoteId);
         public bool DeleteImage(long NoteId);
+        public List<Notes> GetAllUserNotes();
 
 
     }

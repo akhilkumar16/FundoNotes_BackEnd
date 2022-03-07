@@ -87,6 +87,22 @@ namespace RepositoryLayer.services
             }
         }
         /// <summary>
+        /// all notes from all userers
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public List<Notes> GetAllUserNotes()
+        {
+            try
+            {
+                return this.fundoContext.Notestables.ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        /// <summary>
         /// All Notes by Note Id
         /// </summary>
         /// <param name="NotesId"></param>

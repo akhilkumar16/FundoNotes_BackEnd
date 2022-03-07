@@ -21,7 +21,6 @@ namespace Fundonotes.Controllers
     public class NotesController : ControllerBase
     {
         private readonly INotesBL notesBL; // can only be assigned a value from within the constructor(s) of a class.
-        private readonly FundoContext fundocontext;
         public NotesController(INotesBL notesBL)
         {
             this.notesBL = notesBL;
@@ -73,7 +72,7 @@ namespace Fundonotes.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("GetAll")]
+        [Route("GetByuserId")]
         public IActionResult GetAllNotes()
         {
             try
@@ -102,6 +101,24 @@ namespace Fundonotes.Controllers
                 //checking if the user has a claim to access.
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
                 List<Notes> notes = this.notesBL.GetNote(NoteId);
+                return Ok(notes);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+        /// <summary>
+        /// All notes by userers
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetAll")]
+        public IActionResult GetAllUserNotes()
+        {
+            try
+            {
+                IEnumerable<Notes> notes = this.notesBL.GetAllUserNotes();
                 return Ok(notes);
             }
             catch (Exception)
