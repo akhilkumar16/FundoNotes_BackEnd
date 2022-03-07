@@ -3,11 +3,16 @@ using CommonLayer.models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
 using RepositoryLayer.context;
 using RepositoryLayer.entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Fundonotes.Controllers
@@ -23,10 +28,14 @@ namespace Fundonotes.Controllers
        // can only be assigned a value from within the constructor(s) of a class.
         private readonly ILabelBL labelBL; 
         private readonly FundoContext fundocontext;
-        public LabelController(ILabelBL labelBL, FundoContext fundocontext)
+        private readonly IMemoryCache memoryCache;
+        private readonly IDistributedCache distributedCache;
+        public LabelController(ILabelBL labelBL, FundoContext fundocontext,IMemoryCache memoryCache,IDistributedCache distributedCache)
         {
             this.labelBL = labelBL;
             this.fundocontext = fundocontext;
+            this.memoryCache = memoryCache;
+            this.distributedCache = distributedCache;
         }
         /// <summary>
         /// Creates a label 
@@ -68,7 +77,7 @@ namespace Fundonotes.Controllers
             }
             catch (Exception)
             {
-                return this.BadRequest(new { success = false, message = "label not Added", data = LabelName });
+                return this.BadRequest(new { success = false, message = "label not Added", data = LabelName});
             }
         }
         /// <summary>
@@ -106,6 +115,35 @@ namespace Fundonotes.Controllers
             //checking if the user has a claim to access.
             long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
             return this.labelBL.GetAllLabel(); 
+        }
+        /// <summary>
+        /// Cache Memory
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("redis")]
+        public async Task<IActionResult> GetAllRedisCache()
+        {
+            var cacheKey = "AllLabel";
+            string serializedAllLabel;
+            var AllLabel = new List<Label>();
+            var redisAllLabel = await distributedCache.GetAsync(cacheKey);
+            if (redisAllLabel != null)
+            {
+                serializedAllLabel = Encoding.UTF8.GetString(redisAllLabel);
+                AllLabel = JsonConvert.DeserializeObject<List<Label>>(serializedAllLabel);
+            }
+            else
+            {
+                AllLabel = await fundocontext.Labeltables.ToListAsync();
+                serializedAllLabel = JsonConvert.SerializeObject(AllLabel);
+                redisAllLabel = Encoding.UTF8.GetBytes(serializedAllLabel);
+                var options = new DistributedCacheEntryOptions()
+                    .SetAbsoluteExpiration(DateTime.Now.AddMinutes(10))
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(2));
+                await distributedCache.SetAsync(cacheKey, redisAllLabel, options);
+            }
+            return Ok(AllLabel);
         }
         /// <summary>
         /// deleting the label by Id

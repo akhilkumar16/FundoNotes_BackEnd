@@ -15,6 +15,7 @@ namespace RepositoryLayer.interfaces
         public string ForgotPassword(string Email); // For Password method.
 
         public bool ResetPassword(String Email, string Password, String ConfirmPassword); // Reseting the password.
+        public List<User> GetAllUsers();
 
 
     }

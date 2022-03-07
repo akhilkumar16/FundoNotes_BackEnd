@@ -138,12 +138,12 @@ namespace Fundonotes.Controllers
             }
         }
         /// <summary>
-        /// 
+        /// Cache Memory
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [HttpGet("redis")]
-        public async Task<IActionResult> GetAllCustomersUsingRedisCache()
+        [Route("redis")]
+        public async Task<IActionResult> GetAllCRedisCache()
         {
             var cacheKey = "AllNOtes";
             string serializedAllNotes;

@@ -185,5 +185,16 @@ namespace RepositoryLayer.services
             decryptpwd = new String(decoded_char);
             return decryptpwd;
         }
+        public List<User> GetAllUsers()
+        {
+            try
+            {
+                return this.fundoContext.UserTables.ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

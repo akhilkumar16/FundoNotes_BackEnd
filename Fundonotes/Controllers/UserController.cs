@@ -3,10 +3,17 @@ using CommonLayer.models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
+using RepositoryLayer.context;
+using RepositoryLayer.entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Fundonotes.Controllers
@@ -16,9 +23,15 @@ namespace Fundonotes.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserBL userBL; // can only be assigned a value from within the constructor(s) of a class.
-        public UserController(IUserBL userBL)
+        private readonly FundoContext fundocontext;
+        private readonly IMemoryCache memoryCache;
+        private readonly IDistributedCache distributedCache;
+        public UserController(IUserBL userBL,FundoContext fundocontext,IMemoryCache memoryCache , IDistributedCache distributedCache)
         {
-            this.userBL = userBL; 
+            this.userBL = userBL;
+            this.fundocontext = fundocontext;
+            this.memoryCache = memoryCache;
+            this.distributedCache = distributedCache;
         }
         [HttpPost("Register")] // POST is to send and receive data.
         public IActionResult addUser(UserRegmodel userRegmodel) //IActionResult lets you return both data and HTTP codes.
@@ -93,6 +106,35 @@ namespace Fundonotes.Controllers
             {
                 return this.BadRequest(new { success = false, message = "Oops!!! Could not find Email" });
             }
+        }
+        /// <summary>
+        /// Cache Memory
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("redis")]
+        public async Task<IActionResult> GetAllRedisCache()
+        {
+            var cacheKey = "AllUsers";
+            string serializedAllUsers;
+            var AllUsers = new List<User>();
+            var redisAllUsers = await distributedCache.GetAsync(cacheKey);
+            if (redisAllUsers != null)
+            {
+                serializedAllUsers = Encoding.UTF8.GetString(redisAllUsers);
+                AllUsers = JsonConvert.DeserializeObject<List<User>>(serializedAllUsers);
+            }
+            else
+            {
+                AllUsers = await fundocontext.UserTables.ToListAsync();
+                serializedAllUsers = JsonConvert.SerializeObject(AllUsers);
+                redisAllUsers = Encoding.UTF8.GetBytes(serializedAllUsers);
+                var options = new DistributedCacheEntryOptions()
+                    .SetAbsoluteExpiration(DateTime.Now.AddMinutes(10))
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(2));
+                await distributedCache.SetAsync(cacheKey, redisAllUsers, options);
+            }
+            return Ok(AllUsers);
         }
     }
 }
