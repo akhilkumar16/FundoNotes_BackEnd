@@ -34,7 +34,7 @@ namespace CommonLayer.models
             var message = messageQueue.EndReceive(e.AsyncResult);// it receive the completed event.
             string token = message.Body.ToString();// returns a string which is related to object.
             string Subject = "Access Token"; // Display the Email subject.
-            string Body = token; // Display the body of the mail.
+            string Body = "Dear User token for changing of password is ---- "+ token; // Display the body of the mail.
             string JWT = DecodeJWT(token);//allows the application to use the data, and validation.
             var SmtpClient = new SmtpClient("Smtp.gmail.com") //To construct and send an email message by using SmtpClient.
             {

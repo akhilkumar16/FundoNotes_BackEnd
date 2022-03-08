@@ -152,7 +152,7 @@ namespace RepositoryLayer.services
                 if (Password.Equals(ConfirmPassword)) // comparing of passwords.
                 {
                     User user = fundoContext.UserTables.Where(e => e.Email == Email).FirstOrDefault(); // selecting the email from DB to change the password.
-                    user.Password = ConfirmPassword; // Given password should be as confirmed one.
+                    user.Password =(ConfirmPassword); // Given password should be as confirmed one.
                     fundoContext.SaveChanges(); // Store the Data entered.
                     return true;
                 }
@@ -169,19 +169,29 @@ namespace RepositoryLayer.services
         public static string ConvertToEncrypt(string password)
         {
             if (string.IsNullOrEmpty(password))
+            {
                 return "";
+            }
+            else
+            {
                 password += key;
                 var passwordBytes = Encoding.UTF8.GetBytes(password);
                 return Convert.ToBase64String(passwordBytes);
+            }
         }
         private static string ConvertToDecrypt(string base64EncodeData)
         {
             if (string.IsNullOrEmpty(base64EncodeData))
+            {
                 return "";
+            }
+            else
+            {
                 var base64EncodeBytes = Convert.FromBase64String(base64EncodeData);
                 var result = Encoding.UTF8.GetString(base64EncodeBytes);
-                result = result.Substring(0, result.Length);
+                result = result.Substring(0, result.Length - key.Length);
                 return result;
+                }
         }
         public List<User> GetAllUsers()
         {
