@@ -7,6 +7,7 @@
 using BusinessLayer.interfaces;
 using CommonLayer.models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +40,8 @@ namespace Fundonotes.Controllers
             this.memoryCache = memoryCache;
             this.distributedCache = distributedCache;
         }
-        [HttpPost("Register")] // POST is to send and receive data.
+        [HttpPost("Register")]
+        // POST is to send and receive data.
         public IActionResult addUser(UserRegmodel userRegmodel) //IActionResult lets you return both data and HTTP codes.
         {
             try

@@ -45,6 +45,14 @@ namespace Fundonotes
                 // conneting with Database.
                 services.AddDbContext<FundoContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:FundoDB"])); 
                 services.AddControllers();
+                services.AddCors(options =>
+                {
+                    options.AddPolicy(
+                    name: "AllowOrigin",
+                  builder => {
+                      builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                  });
+                });
                 services.AddSwaggerGen(c =>
                 {
                     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Welcome to FundooNotes" });
@@ -120,12 +128,10 @@ namespace Fundonotes
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
             app.UseAuthentication();// for Authentication @ resetpaswword 
             app.UseAuthorization();// for Authorize the token 
-
+            app.UseCors("AllowOrigin");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
