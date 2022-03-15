@@ -101,6 +101,7 @@ namespace Fundonotes.Controllers
         }
         [Authorize] //user to grant and restrict permissions on Web pages.
         [HttpPost("ResetPassword")] // To send data .
+        [EnableCors("AllowOrigin")]
         public IActionResult ResetPassword( string Password, string ConfirmPassword) //IActionResult lets you return both data and HTTP codes.
         {
             try

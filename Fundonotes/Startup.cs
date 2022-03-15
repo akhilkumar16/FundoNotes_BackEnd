@@ -123,6 +123,10 @@ namespace Fundonotes
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) // Middlewares are added in configure.
         {
+            app.UseCors(x => x
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -131,7 +135,8 @@ namespace Fundonotes
             app.UseRouting();
             app.UseAuthentication();// for Authentication @ resetpaswword 
             app.UseAuthorization();// for Authorize the token 
-            app.UseCors("AllowOrigin");
+            
+            app.UseHttpsRedirection();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
