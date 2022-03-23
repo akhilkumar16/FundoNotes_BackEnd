@@ -31,328 +31,455 @@ namespace Fundonotes.Controllers
     [Authorize] //user to grant and restrict permissions on Web pages.
     public class NotesController : ControllerBase
     {
-        private readonly INotesBL notesBL; // can only be assigned a value from within the constructor(s) of a class.
-        private readonly FundoContext fundocontext;
-        private readonly IMemoryCache memoryCache;
-        private readonly IDistributedCache distributedCache;
-        public NotesController(INotesBL notesBL , FundoContext fundocontext,IMemoryCache  memoryCache,IDistributedCache distributedCache)
-        {
-            this.notesBL = notesBL;
-            this.fundocontext = fundocontext;
-            this.memoryCache = memoryCache;
-            this.distributedCache = distributedCache;
-        }
         /// <summary>
-        /// Create opration Api
+        /// Global variables
         /// </summary>
-        /// <param name="notesmodel"></param>
+        private readonly INotesBL notebl;
+        private readonly FundoContext fUNcontext;
+        private readonly IMemoryCache memCache;
+        private readonly IDistributedCache distCache;
+
+
+        /// <summary>
+        /// Construction function
+        /// </summary>
+        /// <param name="Nbl"></param>
+        /// <param name="funContext"></param>
+        public NotesController(INotesBL notebl, FundoContext funContext, IMemoryCache memCache, IDistributedCache distCache)
+        {
+            this.notebl = notebl;
+            this.fUNcontext = funContext;
+            this.memCache = memCache;
+            this.distCache = distCache;
+        }
+
+        /// <summary>
+        /// Create note api
+        /// </summary>
+        /// <param name="noteModel"></param>
         /// <returns></returns>
-        [HttpPost]// POST is to send and receive data.
-        [Route("Create")]
-        public IActionResult AddNotes(Notesmodel notesmodel)
+        [HttpPost("Create")]
+        public IActionResult CreateNote(Notesmodel noteModel)
         {
             try
             {
-                //checking if the user has a claim to access.
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var result = this.notesBL.AddNotes(notesmodel,userid);
-                return this.Ok(new { success = true, message = "Notes Added Successful", data = notesmodel });
+                if (this.notebl.CreateNote(noteModel, userid))
+                {
+                    return this.Ok(new { status = 200, isSuccess = true, message = "Note created", data = noteModel });
+                }
+                else
+                {
+                    return this.BadRequest(new { status = 401, isSuccess = false, message = "Failed to create note" });
+                }
             }
             catch (Exception e)
             {
-                return this.BadRequest(new { success = false, message = e.InnerException });
+                return this.BadRequest(new { status = 400, isSuccess = false, Message = e.InnerException.Message });
             }
         }
+
         /// <summary>
-        /// Update operation Api
+        /// API to retrieve all user notes
         /// </summary>
-        /// <param name="notesUpdatemodel"></param>
         /// <returns></returns>
-        [HttpPut]
-        [Route("update")]
-        public IActionResult UpdateNotes(Notesmodel notesUpdatemodel)
+        [HttpGet("Show")]
+        public IActionResult ShowUserNotes()
         {
             try
             {
-                //checking if the user has a claim to access.
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var result = this.notesBL.UpdateNote(notesUpdatemodel,userid);
-                return this.Ok(new { success = true, message = "Notes Updated Successful", data = notesUpdatemodel });
+                IEnumerable<Notes> notes = this.notebl.ShowUserNotes(userid);
+                if (notes != null)
+                {
+                    return this.Ok(new { status = 200, isSuccess = true, message = "Successful", data = notes });
+                }
+                else
+                {
+                    return this.NotFound(new { status = 404, isSuccess = false, message = "No Notes Found" });
+                }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return this.BadRequest(new { success = false, message = "Notes Not Updated" });
-            }
-        }
-        /// <summary>
-        /// Read operation Api
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("GetByuserId")]
-        public IActionResult GetAllNotes()
-        {
-            try
-            {
-                //checking if the user has a claim to access.
-                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                IEnumerable<Notes> notes = this.notesBL.GetAllNotes(userid);
-                return Ok(notes);
-            }
-            catch (Exception)
-            {
-                return BadRequest();
+                return this.BadRequest(new { Status = 401, isSuccess = false, Message = e.InnerException.Message });
             }
         }
-        /// <summary>
-        /// Read opeartion Api by note Id
-        /// </summary>
-        /// <param name="NoteId"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("GetById")]
-        public IActionResult Getnote(long NoteId)
+
+        [HttpGet("redis")]
+        public async Task<IActionResult> GetAllNotesUsingRedisCache()
         {
-            try
+            var cacheKey = "NotesList";
+            string serializedNotesList;
+            var notesList = new List<Notes>();
+            var redisNotesList = await this.distCache.GetAsync(cacheKey);
+            if (redisNotesList != null)
             {
-                //checking if the user has a claim to access.
-                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                List<Notes> notes = this.notesBL.GetNote(NoteId);
-                return Ok(notes);
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
-        }
-        /// <summary>
-        /// All notes by userers
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("GetAll")]
-        public IActionResult GetAllUserNotes()
-        {
-            try
-            {
-                IEnumerable<Notes> notes = this.notesBL.GetAllUserNotes();
-                return Ok(notes);
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
-        }
-        /// <summary>
-        /// Cache Memory
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("redis")]
-        public async Task<IActionResult> GetAllCRedisCache()
-        {
-            var cacheKey = "AllNOtes";
-            string serializedAllNotes;
-            var AllNotes = new List<Notes>();
-            var redisAllNotes = await distributedCache.GetAsync(cacheKey);
-            if (redisAllNotes != null)
-            {
-                serializedAllNotes = Encoding.UTF8.GetString(redisAllNotes);
-                AllNotes = JsonConvert.DeserializeObject<List<Notes>>(serializedAllNotes);
+                serializedNotesList = Encoding.UTF8.GetString(redisNotesList);
+                notesList = JsonConvert.DeserializeObject<List<Notes>>(serializedNotesList);
             }
             else
             {
-                AllNotes = await fundocontext.Notestables.ToListAsync();
-                serializedAllNotes = JsonConvert.SerializeObject(AllNotes);
-                redisAllNotes = Encoding.UTF8.GetBytes(serializedAllNotes);
+                notesList = (List<Notes>)this.notebl.GetEveryonesNotes();
+                serializedNotesList = JsonConvert.SerializeObject(notesList);
+                redisNotesList = Encoding.UTF8.GetBytes(serializedNotesList);
                 var options = new DistributedCacheEntryOptions()
                     .SetAbsoluteExpiration(DateTime.Now.AddMinutes(10))
                     .SetSlidingExpiration(TimeSpan.FromMinutes(2));
-                await distributedCache.SetAsync(cacheKey, redisAllNotes, options);
+                await this.distCache.SetAsync(cacheKey, redisNotesList, options);
             }
-            return Ok(AllNotes);
+            return this.Ok(notesList);
         }
-        /// <summary>
-        /// Delete operation Api ( Delete total )
-        /// </summary>
-        /// <param name="NoteId"></param>
-        /// <returns></returns>
-        [HttpDelete]
-        [Route("Delete")]
-        public IActionResult DeleteNote(long NoteId)
+
+        [HttpGet("{id}/Show")]
+        public IActionResult GetIDNote(long noteid)
         {
             try
             {
-                //checking if the user has a claim to access.
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var delete = this.notesBL.DeleteNote(NoteId);
-                return this.Ok(delete);
-            }
-            catch (Exception)
-            {
-                return this.BadRequest();
-            }
-        }
-        /// <summary>
-        /// Api for archieve
-        /// </summary>
-        /// <param name="NoteId"></param>
-        /// <returns></returns>
-        [HttpPut]
-        [Route("Archive")]
-        public IActionResult Archieve(long NoteId)
-        {
-            try
-            {
-                var archieve = this.notesBL.Archive(NoteId);
-                return this.Ok(archieve);
+                IEnumerable<Notes> noteFromID = this.notebl.GetIDNote(noteid);
+                if (noteFromID != null)
+                {
+                    return this.Ok(new { status = 200, isSuccess = true, message = "Successful", data = noteFromID });
+                }
+                else
+                {
+                    return this.NotFound(new { status = 404, isSuccess = false, message = "No Notes Found" });
+                }
             }
             catch (Exception e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(new { Status = 401, isSuccess = false, Message = e.InnerException.Message });
             }
         }
+
         /// <summary>
-        /// Api for Unarchieve
+        /// retrieving all notes for all users
         /// </summary>
-        /// <param name="NoteId"></param>
         /// <returns></returns>
-        [HttpPut]
-        [Route("Unarchive")]
-        public IActionResult UnArchieve(long NoteId)
+        [HttpGet("GetAll")]
+        public IActionResult GetEveryonesNotes()
         {
             try
             {
-                var unarchieve = this.notesBL.UnArchive(NoteId);
-                return this.Ok(new { success = true, message = "Notes Unarchieve Successful",data = unarchieve });
+                IEnumerable<Notes> notes = this.notebl.GetEveryonesNotes();
+                if (notes != null)
+                {
+                    return this.Ok(new { status = 200, isSuccess = true, message = "Successful", data = notes });
+                }
+                else
+                {
+                    return this.NotFound(new { status = 404, isSuccess = false, message = "No Notes Found" });
+                }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return this.BadRequest(new { success = false, message = "Notes Not UnArchieved" });
+                return this.BadRequest(new { Status = 401, isSuccess = false, Message = e.InnerException.Message });
             }
         }
+
         /// <summary>
-        /// Api for note getting pinned 
+        /// API to update contents of a note and update its ModifiedAt time
         /// </summary>
-        /// <param name="NoteId"></param>
+        /// <param name="note"></param>
         /// <returns></returns>
-        [HttpPut]
-        [Route("pin")]
-        public IActionResult Pin(long NoteId)
+        [HttpPut("Update")]
+        public IActionResult UpdateNote(Notes note)
         {
             try
             {
-                var pin = this.notesBL.Pin(NoteId);
-                return this.Ok(new { success = true, message = "Notes Pinned Successful", data = pin });
-            }
-            catch (Exception)
-            {
-                return this.BadRequest(new { success = false, message = "Notes Not pinned" });
-            }
-        }
-        /// <summary>
-        /// Api for Unpin
-        /// </summary>
-        /// <param name="NoteId"></param>
-        /// <returns></returns>
-        [HttpPut]
-        [Route("unpin")]
-        public IActionResult UnPin(long NoteId)
-        {
-            try
-            {
-                var unpin = this.notesBL.UnPin(NoteId);
-                return this.Ok(new { success = true, message = "Notes UnPinned Successful", data = unpin });
-            }
-            catch (Exception)
-            {
-                return this.BadRequest(new { success = false, message = "Notes Not pinned" });
-            }
-        }
-        /// <summary>
-        /// Note moves to trash on deletion  
-        /// </summary>
-        /// <param name="NoteId"></param>
-        /// <returns></returns>
-        [HttpDelete]
-        [Route("Trash")]
-        public IActionResult TrashNote(long NoteId)
-        {
-            try
-            {
-                //checking if the user has a claim to access.
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var trash = this.notesBL.Trash(NoteId);
-                return this.Ok(new { success = true, message = "Notes Trashed Successful", data = trash });
+                if (note.UserId == userid)
+                {
+                    var result = this.notebl.UpdateNotes(note);
+                    if (result.Equals("Done"))
+                    {
+                        return this.Ok(new { Success = true, message = "Note Updated successfully " });
+                    }
+                    else
+                    {
+                        return this.BadRequest(new { Status = false, Message = "Error while updating notes" });
+                    }
+                }
+                else
+                {
+                    return this.Unauthorized(new { status = 401, isSuccess = false, Message = "Unauthorized" });
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return this.BadRequest(new { success = false, message = "Notes UnTrashed" });
+                return this.BadRequest(new { Status = false, Message = ex.Message, InnerException = ex.InnerException });
             }
         }
+
         /// <summary>
-        /// Api to add color
+        /// API to Un/Archive a note
         /// </summary>
-        /// <param name="NoteId"></param>
-        /// <param name="addcolor"></param>
+        /// <param name="noteid"></param>
         /// <returns></returns>
-        [HttpPut]
-        [Route("color")]
-        public IActionResult AddColor(long NoteId, string addcolor)
+        [HttpPut("Archive")]
+        public IActionResult ArchiveNote(long noteid)
         {
             try
             {
-                //checking if the user has a claim to access.
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var color = this.notesBL.Color(NoteId, addcolor);
-                return Ok(new { success = true, message = "Color Added", data = color });
+                var archNote = this.fUNcontext.Notestables.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (archNote.UserId == userid)
+                {
+                    var result = this.notebl.ArchiveNote(noteid);
+                    if (result == true)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Note Archived" });
+                    }
+                    if (result == false)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Note UnArchived" });
+                    }
+                    return this.BadRequest(new { status = 400, isSuccess = false, Message = "Internal error" });
+                }
+                else
+                {
+                    return this.Unauthorized(new { status = 401, isSuccess = false, Message = "Not authorized to change this note" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { Status = false, Message = e.Message, InnerException = e.InnerException });
+            }
+        }
+
+        /// <summary>
+        /// API for Un/Pin a note
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        [HttpPut("Pin")]
+        public IActionResult PinNote(long noteid)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var pinnedNote = this.fUNcontext.Notestables.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (pinnedNote.UserId == userid)
+                {
+                    var result = this.notebl.PinNote(noteid);
+                    if (result == true)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Note Pinned" });
+                    }
+                    if (result == false)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Note UnPinned" });
+                    }
+                    return this.BadRequest(new { status = 400, isSuccess = false, Message = "Internal error" });
+                }
+                else
+                {
+                    return this.Unauthorized(new { status = 401, isSuccess = false, Message = "Not authorized to change this note" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { Status = false, Message = e.Message, InnerException = e.InnerException });
+            }
+        }
+
+        /// <summary>
+        /// Delete the note using note id
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        [HttpPut("Delete")]
+        public IActionResult DeleteNote(long noteid)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var deletedNote = this.fUNcontext.Notestables.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (deletedNote.UserId == userid)
+                {
+                    var result = this.notebl.DeleteNote(noteid);
+                    if (result == true)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Note Deleted" });
+                    }
+                    if (result == false)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Note Restored" });
+                    }
+                    return this.BadRequest(new { status = 400, isSuccess = false, Message = "Internal error" });
+                }
+                else
+                {
+                    return this.Unauthorized(new { status = 401, isSuccess = false, Message = "Not authorized to Delete this note" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { Status = false, Message = e.Message, InnerException = e.InnerException });
+            }
+        }
+
+        /// <summary>
+        /// Deletes the note forever
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        [HttpDelete("ForeverDelete")]
+        public IActionResult ForeverDeleteNote(long noteid)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var fDeleNote = this.fUNcontext.Notestables.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (fDeleNote.UserId == userid)
+                {
+                    var result = this.notebl.ForeverDeleteNote(noteid);
+                    if (result == true)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Deleted note forever" });
+                    }
+                    return this.BadRequest(new { status = 401, isSuccess = false, Message = "Incorrect note id" });
+                }
+                else
+                {
+                    return this.Unauthorized(new { status = 401, isSuccess = false, Message = "Not authorized to change this note" });
+                }
             }
             catch (Exception)
             {
-                return this.BadRequest(new { success = false, message = " Color not Added" });
+                return this.BadRequest(new { status = 404, isSuccess = false, Message = "Note not found or already deleted" });
             }
         }
+
         /// <summary>
-        /// Api to upload Image
+        /// API for color addition to notes
+        /// </summary>
+        /// <param name="color"></param>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        [HttpPut("AddColor")]
+        public IActionResult AddNoteColor(string color, long noteid)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var colourNote = this.fUNcontext.Notestables.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (colourNote.UserId == userid)
+                {
+                    var result = this.notebl.AddNoteColor(color, noteid);
+                    if (result == "Updated")
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Note color updated" });
+                    }
+                    return this.BadRequest(new { status = 401, isSuccess = false, Message = "Note color not updated" });
+                }
+                else
+                {
+                    return this.Unauthorized(new { status = 401, isSuccess = false, Message = "Not authorized to change this note" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { status = 401, isSuccess = false, Message = e.Message });
+            }
+        }
+
+        /// <summary>
+        /// API to remove from notes
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        [HttpPut("RemoveColor")]
+        public IActionResult RemoveNoteColor(long noteid)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var colourNote = this.fUNcontext.Notestables.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (colourNote.UserId == userid)
+                {
+                    var result = this.notebl.RemoveNoteColor(noteid);
+                    if (result == "Updated")
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Note color updated" });
+                    }
+                    return this.BadRequest(new { status = 400, isSuccess = false, Message = "Note color not updated" });
+                }
+                else
+                {
+                    return this.Unauthorized(new { status = 401, isSuccess = false, Message = "Not authorized to change this note" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { status = 400, isSuccess = false, Message = e.Message });
+            }
+        }
+
+        /// <summary>
+        /// API for adding a background image for a note
         /// </summary>
         /// <param name="imageURL"></param>
-        /// <param name="NoteId"></param>
+        /// <param name="noteid"></param>
         /// <returns></returns>
-        [HttpPut]
-        [Route("Image")]
-        public IActionResult Image(IFormFile imageURL, long NoteId)
+        [HttpPut("AddBgImage")]
+        public IActionResult AddNoteBgImage(IFormFile imageURL, long noteid)
         {
             try
             {
-                //checking if the user has a claim to access.
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var upload = this.notesBL.Image(imageURL,NoteId);
-                return this.Ok(new { success = true, message = " Image Successful",data = upload});
+                var noteBgImage = this.fUNcontext.Notestables.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (noteBgImage.UserId == userid)
+                {
+                    var result = this.notebl.AddNoteBgImage(imageURL, noteid);
+                    if (result)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Note Bg Image updated" });
+                    }
+                    return this.BadRequest(new { status = 400, isSuccess = false, Message = "Note Bg image not updated" });
+                }
+                else
+                {
+                    return this.Unauthorized(new { status = 401, isSuccess = false, Message = "Not logged in" });
+                }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return this.BadRequest(new { success = false, message = "Image Unsuccessfull" });
+                return this.BadRequest(new { status = 400, isSuccess = false, Message = e.InnerException.Message });
             }
         }
+
         /// <summary>
-        /// Deletes Image
+        /// API to remove Background image from a note
         /// </summary>
-        /// <param name="NoteId"></param>
-        /// <returns></returns>
-        [HttpPut]
-        [Route("DeleteImage")]
-        public IActionResult DeleteImage(long NoteId)
+        [HttpPut("RemoveBgImage")]
+        public IActionResult DeleteNoteBgImage(long noteid)
         {
             try
             {
-                //checking if the user has a claim to access.
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var upload = this.notesBL.DeleteImage( NoteId);
-                return this.Ok(new { success = true, message = " Image Deleted Successful", data = upload });
+                var noteBgImage = this.fUNcontext.Notestables.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (noteid == 0)
+                {
+                    return this.NotFound(new { status = 404, isSuccess = false, Message = "Noteid not entered, Please enter a note id!" });
+                }
+                if (noteBgImage.UserId == userid)
+                {
+                    var result = this.notebl.DeleteNoteBgImage(noteid);
+                    if (result)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Bg image deleted" });
+                    }
+                    return this.BadRequest(new { status = 400, isSuccess = false, Message = "Image note deleted" });
+                }
+                else
+                {
+                    return this.Unauthorized(new { status = 401, isSuccess = false, Message = "Not logged in" });
+                }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return this.BadRequest(new { success = false, message = "Image Not Deleted Unsuccessfull" });
+                return this.BadRequest(new { status = 400, isSuccess = false, Message = e.InnerException.Message });
             }
         }
     }

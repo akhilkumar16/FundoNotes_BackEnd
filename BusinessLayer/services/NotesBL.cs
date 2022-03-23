@@ -12,198 +12,245 @@ namespace BusinessLayer.services
 {
     public class NotesBL : INotesBL
     {
-        private readonly INotesRL notesRL; 
-        public NotesBL(INotesRL notesRL)
+        /// <summary>
+        /// Variables
+        /// </summary>
+        INotesRL Nrl;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Nrl"></param>
+        public NotesBL(INotesRL Nrl)
         {
-            this.notesRL = notesRL;
+            this.Nrl = Nrl;
         }
 
-        public bool AddNotes(Notesmodel notesmodel,long userId)
+        /// <summary>
+        /// Adding a new note function
+        /// </summary>
+        /// <param name="noteModel"></param>
+        /// <returns></returns>
+        public bool CreateNote(Notesmodel noteModel, long userid)
         {
             try
             {
-                return notesRL.AddNotes(notesmodel,userId);
+                return this.Nrl.CreateNote(noteModel, userid);
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
 
-        public string Archive(long NoteId)
+        /// <summary>
+        /// Retrieving all notes
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Notes> ShowUserNotes(long userid)
         {
             try
             {
-                return notesRL.Archive(NoteId);
-
+                return this.Nrl.ShowUserNotes(userid);
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
 
-        public string Color(long NoteId, string addcolor)
+        /// <summary>
+        /// Retrieve a specific note
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        public IEnumerable<Notes> GetIDNote(long noteid)
         {
             try
             {
-                return notesRL.Color(NoteId, addcolor);
+                var result = this.Nrl.GetIDNote(noteid);
+                return result;
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
 
-        public bool DeleteImage(long NoteId)
+        /// <summary>
+        /// Updating note contents and update time
+        /// </summary>
+        /// <param name="note"></param>
+        /// <returns></returns>
+        public string UpdateNotes(Notes note)
         {
             try
             {
-                return notesRL.DeleteImage(NoteId);
+                string result = this.Nrl.UpdateNotes(note);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Un/Archive a note
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        public bool ArchiveNote(long noteid)
+        {
+            try
+            {
+                var result = this.Nrl.ArchiveNote(noteid);
+                return result;
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
 
-        public string DeleteNote(long NoteId)
+        /// <summary>
+        /// Un/Pin the note
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        public bool PinNote(long noteid)
         {
             try
             {
-                return notesRL.DeleteNote(NoteId);
-
+                var result = this.Nrl.PinNote(noteid);
+                return result;
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
 
-        public List<Notes> GetAllNotes(long userId)
+        /// <summary>
+        /// Delete/recover a note
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        public bool DeleteNote(long noteid)
         {
             try
             {
-                return notesRL.GetAllNotes(userId);
+                var result = this.Nrl.DeleteNote(noteid);
+                return result;
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
 
-        public List<Notes> GetAllUserNotes()
+        /// <summary>
+        /// Delete a note forever
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        public bool ForeverDeleteNote(long noteid)
         {
             try
             {
-                return notesRL.GetAllUserNotes();
+                var result = this.Nrl.ForeverDeleteNote(noteid);
+                return result;
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
 
-        public List<Notes> GetNote(long NoteId)
+        /// <summary>
+        /// add a color to a note
+        /// </summary>
+        /// <param name="color"></param>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        public string AddNoteColor(string color, long noteid)
         {
             try
             {
-                return notesRL.GetNote(NoteId);
-
+                var result = this.Nrl.AddNoteColor(color, noteid);
+                return result;
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
 
-        public bool Image(IFormFile imageURL, long NoteId)
+        /// <summary>
+        /// Remove a color assigned to a note
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        public string RemoveNoteColor(long noteid)
         {
             try
             {
-                return notesRL.Image(imageURL, NoteId);
+                var result = this.Nrl.RemoveNoteColor(noteid);
+                return result;
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
 
-        public string Pin(long NoteId)
+        /// <summary>
+        /// add any background image to the note
+        /// </summary>
+        /// <param name="imageURL"></param>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        public bool AddNoteBgImage(IFormFile imageURL, long noteid)
         {
             try
             {
-                return notesRL.Pin(NoteId);
+                var result = this.Nrl.AddNoteBgImage(imageURL, noteid);
+                return result;
             }
             catch (Exception)
             {
-
-                throw;
-            }
-            
-        }
-
-        public string Trash(long NoteId)
-        {
-            try
-            {
-                return notesRL.Trash(NoteId);
-            }
-            catch (Exception)
-            {
-
                 throw;
             }
         }
 
-        public string UnArchive(long NoteId)
+        /// <summary>
+        /// Delete the background image from a note
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        public bool DeleteNoteBgImage(long noteid)
         {
             try
             {
-                return notesRL.UnArchive(NoteId);
+                var result = this.Nrl.DeleteNoteBgImage(noteid);
+                return result;
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
 
-        public string UnPin(long NoteId)
+        public IEnumerable<Notes> GetEveryonesNotes()
         {
             try
             {
-                return notesRL.UnPin(NoteId);
+                return this.Nrl.GetEveryonesNotes();
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
-
-        public string UpdateNote(Notesmodel notesUpdatemodel, long NoteId)
-        {
-            try
-            {
-                return notesRL.UpdateNote(notesUpdatemodel, NoteId);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            
-        }
-        
     }
 }

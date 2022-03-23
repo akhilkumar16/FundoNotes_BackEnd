@@ -10,20 +10,18 @@ namespace BusinessLayer.interfaces
 {
     public interface INotesBL
     {
-        public bool AddNotes(Notesmodel notesmodel,long userId);
-        public string UpdateNote(Notesmodel notesUpdatemodel, long NoteId);
-        public List<Notes> GetAllNotes(long UserId);
-        public List<Notes> GetNote(long NoteId);
-        public string DeleteNote(long NoteId);
-        public string Archive(long NoteId);
-        public string UnArchive(long NoteId);
-        public string Pin(long NoteId);
-        public string UnPin(long NoteId);
-        public string Trash(long NoteId);
-        public string Color(long NoteId, string addcolor);
-        public bool Image(IFormFile imageURL, long NoteId);
-        public bool DeleteImage(long NoteId);
-        public List<Notes> GetAllUserNotes();
-
+        public bool CreateNote(Notesmodel noteModel, long userid);
+        public IEnumerable<Notes> ShowUserNotes(long userid);
+        public IEnumerable<Notes> GetIDNote(long noteid);
+        public string UpdateNotes(Notes note);
+        public bool ArchiveNote(long noteid);
+        public bool PinNote(long noteid);
+        public bool DeleteNote(long noteid);
+        public bool ForeverDeleteNote(long noteid);
+        public string AddNoteColor(string color, long noteid);
+        public string RemoveNoteColor(long noteid);
+        public bool AddNoteBgImage(IFormFile imageURL, long noteid);
+        public bool DeleteNoteBgImage(long noteid);
+        public IEnumerable<Notes> GetEveryonesNotes();
     }
 }

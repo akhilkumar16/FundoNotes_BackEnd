@@ -2,6 +2,7 @@
 using CloudinaryDotNet.Actions;
 using CommonLayer.models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RepositoryLayer.context;
 using RepositoryLayer.entities;
@@ -20,47 +21,174 @@ namespace RepositoryLayer.services
     public class NotesRL : INotesRL
     {
         /// <summary>
-        /// Fundocontext private variable
+        /// Variables
         /// </summary>
-        private readonly FundoContext fundoContext; //context class is used to query or save data to the database.
-        IConfiguration _Toolsettings;  //IConfiguration interface is used to read Settings and Connection Strings from AppSettings.
-        public NotesRL(FundoContext fundoContext, IConfiguration Toolsettings)
-        {
-            this.fundoContext = fundoContext;
-            _Toolsettings = Toolsettings;
-        }
+        FundoContext context;
+        IConfiguration config;
+
         /// <summary>
-        /// Creates Notes 
+        /// Constructor function
         /// </summary>
-        /// <param name="notesmodel"></param>
-        /// <param name="userId"></param>
+        /// <param name="context"></param>
+        /// <param name="_config"></param>
+        public NotesRL(FundoContext context, IConfiguration config)
+        {
+            this.context = context;
+            this.config = config;
+        }
+
+        /// <summary>
+        /// Create note code
+        /// </summary>
+        /// <param name="noteModel"></param>
         /// <returns></returns>
-        public bool AddNotes(Notesmodel notesmodel, long userId)
+        public bool CreateNote(Notesmodel noteModel, long userid)
         {
             try
             {
-                //entities class instance 
-                Notes fundonotes = new Notes();
-                fundonotes.UserId = userId;
-                fundonotes.Title = notesmodel.Title;
-                fundonotes.Discription = notesmodel.Discription;
-                fundonotes.Reminder = notesmodel.Reminder;
-                fundonotes.Color = notesmodel.Color;
-                fundonotes.Image = notesmodel.Image;
-                fundonotes.Backgroundcolour = notesmodel.Backgroundcolour;
-                fundonotes.Archive = notesmodel.Archive;
-                fundonotes.Pin = notesmodel.Pin;
-                fundonotes.ModifiedAt = DateTime.Now;
-                fundonotes.CreatedAt = DateTime.Now;
-                // stores in DataBase
-                fundoContext.Notestables.Add(fundonotes);
-                var result = this.fundoContext.SaveChanges();
+                Notes newNotes = new Notes();
+                newNotes.Title = noteModel.Title;
+                newNotes.Discription = noteModel.Discription;
+                newNotes.Reminder = noteModel.Reminder;
+                newNotes.Color = noteModel.Color;
+                newNotes.Backgroundcolour = noteModel.Backgroundcolour;
+                newNotes.CreatedAt = DateTime.Now;
+                newNotes.UserId = userid;
+                //Adding the data to database
+                this.context.Notestables.Add(newNotes);
+                //Save the changes in database
+                int result = this.context.SaveChanges();
                 if (result > 0)
                 {
                     return true;
                 }
                 else
                 {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Show user all his notes using this function
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Notes> ShowUserNotes(long userid)
+        {
+            try
+            {
+                return this.context.Notestables.ToList().Where(x => x.UserId == userid);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Show the user a specific note
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        public IEnumerable<Notes> GetIDNote(long noteid)
+        {
+            try
+            {
+                return this.context.Notestables.Where(x => x.NoteId == noteid);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Update note and then change ModifiedAt time to modified date and time
+        /// </summary>
+        /// <param name="note"></param>
+        /// <returns></returns>
+        public string UpdateNotes(Notes note)
+        {
+            try
+            {
+                if (note.NoteId != 0)
+                {
+                    this.context.Entry(note).State = EntityState.Modified;
+                    this.context.SaveChanges();
+                    return "Done";
+                }
+                return "Failed";
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Archive note function using ID of the note
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        public bool ArchiveNote(long noteid)
+        {
+            try
+            {
+                var note = this.context.Notestables.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (note.Archive == false)
+                {
+                    note.Archive = true;
+                    note.Pin = false;
+                    note.ModifiedAt = DateTime.Now;
+                    this.context.Entry(note).State = EntityState.Modified;
+                    context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    note.Archive = false;
+                    note.ModifiedAt = DateTime.Now;
+                    this.context.Entry(note).State = EntityState.Modified;
+                    context.SaveChanges();
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Function to Pin the note using note id
+        /// </summary>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        public bool PinNote(long noteid)
+        {
+            try
+            {
+                var note = this.context.Notestables.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (note.Pin == false)
+                {
+                    note.Pin = true;
+                    note.Archive = false;
+                    note.Delete = false;
+                    note.ModifiedAt = DateTime.Now;
+                    this.context.Entry(note).State = EntityState.Modified;
+                    context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    note.Pin = false;
+                    note.ModifiedAt = DateTime.Now;
+                    this.context.Entry(note).State = EntityState.Modified;
+                    context.SaveChanges();
                     return false;
                 }
 
@@ -70,271 +198,164 @@ namespace RepositoryLayer.services
                 throw;
             }
         }
+
         /// <summary>
-        /// All Notes by userId
+        /// Delete Note function using the ID of the note
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="noteid"></param>
         /// <returns></returns>
-        public List<Notes> GetAllNotes(long userId)
+        public bool DeleteNote(long noteid)
         {
             try
             {
-                return this.fundoContext.Notestables.ToList();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-        /// <summary>
-        /// all notes from all userers
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        public List<Notes> GetAllUserNotes()
-        {
-            try
-            {
-                return this.fundoContext.Notestables.ToList();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-        /// <summary>
-        /// All Notes by Note Id
-        /// </summary>
-        /// <param name="NotesId"></param>
-        /// <returns></returns>
-        public List<Notes> GetNote(long NotesId)
-        {
-            // checking of Notes Db
-            var listNote = fundoContext.Notestables.Where(list => list.NoteId == NotesId).SingleOrDefault();
-            if (listNote != null)
-            {
-                return fundoContext.Notestables.Where(list => list.NoteId == NotesId).ToList();
-            }
-            return null;
-        }
-        /// <summary>
-        /// Modifies the existing Note
-        /// </summary>
-        /// <param name="notesUpdatemodel"></param>
-        /// <returns></returns>
-        public string UpdateNote(Notesmodel notesUpdatemodel ,long NoteId )
-        {
-            try
-            {
-                //checking with the notes db
-                var result = fundoContext.Notestables.Where(X => X.NoteId == NoteId).SingleOrDefault();
-                if (result != null)
+                var note = this.context.Notestables.Where(x => x.NoteId == noteid).SingleOrDefault();
+                if (note.Delete == false)
                 {
-                    result.Title = notesUpdatemodel.Title;
-                    result.Discription = notesUpdatemodel.Discription;
-                    result.ModifiedAt = DateTime.Now;
-                    result.Color = notesUpdatemodel.Color;
-                    this.fundoContext.SaveChanges();
-                    return "Modified";
+                    note.Delete = true;
+                    note.Archive = false;
+                    note.Pin = false;
+                    context.Entry(note).State = EntityState.Modified;
+                    context.SaveChanges();
+                    return true;
                 }
                 else
                 {
-                    return "Not Modified";
-
+                    note.Delete = false;
+                    note.ModifiedAt = DateTime.Now;
+                    this.context.Entry(note).State = EntityState.Modified;
+                    context.SaveChanges();
+                    return false;
                 }
-
             }
             catch (Exception)
             {
-
                 throw;
             }
+        }
 
-        }
         /// <summary>
-        /// Deletes total notes by Note Id
+        /// Forever delete a note
         /// </summary>
-        /// <param name="NoteId"></param>
+        /// <param name="noteid"></param>
         /// <returns></returns>
-        public string DeleteNote(long NoteId)
+        public bool ForeverDeleteNote(long noteid)
         {
-            // checking of noteid in db
-            var deletenote = fundoContext.Notestables.Where(del => del.NoteId == NoteId).SingleOrDefault();
-            if (deletenote != null)
+            try
             {
-                // deletes in the database
-                fundoContext.Notestables.Remove(deletenote);
-                this.fundoContext.SaveChanges();
-                return "Notes Deleted Successfully";
-            }
-            else
-            {
-                return null;
-            }
-        }
-        /// <summary>
-        /// Hides the note
-        /// </summary>
-        /// <param name="NoteId"></param>
-        /// <returns></returns>
-        public string Archive(long NoteId)
-        {
-            // returns true noteid == noteid 
-            var result = this.fundoContext.Notestables.Where(arch => arch.NoteId == NoteId).SingleOrDefault();
-            if (result != null)
-            {
-                result.Archive = true;
-                this.fundoContext.SaveChanges();
-                return "Notes archived";
-            }
-            else
-            {
-                return null;
-            }
-        }
-        /// <summary>
-        /// Unhides the note
-        /// </summary>
-        /// <param name="NoteId"></param>
-        /// <returns></returns>
-        public string UnArchive(long NoteId)
-        {
-            var result = this.fundoContext.Notestables.Where(arch => arch.NoteId == NoteId && arch.Archive == true).SingleOrDefault();
-            if (result != null)
-            {
-                result.Archive = false;
-                this.fundoContext.SaveChanges();
-                return "Notes Unarchived";
-            }
-            else
-            {
-                return null;
-            }
-        }
-        /// <summary>
-        /// Note get pinned
-        /// </summary>
-        /// <param name="NoteId"></param>
-        /// <returns></returns>
-        public string Pin(long NoteId)
-        {
-            var result = this.fundoContext.Notestables.Where(pin => pin.NoteId == NoteId).SingleOrDefault();
-            if (result != null)
-            {
-                result.Pin = true;
-                this.fundoContext.SaveChanges();
-                return "Notes Pinned";
-            }
-            else
-            {
-                return null;
-            }
-        }
-        /// <summary>
-        /// Note gets Unpinned
-        /// </summary>
-        /// <param name="NoteId"></param>
-        /// <returns></returns>
-        public string UnPin(long NoteId)
-        {
-            var result = this.fundoContext.Notestables.Where(Upin => Upin.NoteId == NoteId && Upin.Pin == true).SingleOrDefault();
-            if (result != null)
-            {
-                result.Pin = false;
-                this.fundoContext.SaveChanges();
-                return "Notes UnPinned";
-            }
-            else
-            {
-                return null;
-            }
-        }
-        /// <summary>
-        /// Deleted note by trash
-        /// </summary>
-        /// <param name="NoteId"></param>
-        /// <returns></returns>
-        public string Trash(long NoteId)
-        {
-            var TrashNote = this.fundoContext.Notestables.Where(X => X.NoteId == NoteId).SingleOrDefault();
-            if (TrashNote != null)
-            {
-                if (TrashNote.Delete == false)
+                if (noteid > 0)
                 {
-                    TrashNote.Delete = true;
-                    this.fundoContext.SaveChanges();
-                    return "Notes trashed";
+                    var notes = this.context.Notestables.Where(x => x.NoteId == noteid).SingleOrDefault();
+                    if (notes != null)
+                    {
+                        this.context.Notestables.Remove(notes);
+                        this.context.SaveChangesAsync();
+                        return true;
+                    }
                 }
-                if (TrashNote.Delete == true)
-                {
-                    TrashNote.Delete = false;
-                    this.fundoContext.SaveChanges();
-                    return "Notes Untrashed";
-                }
-                return null;
+                return false;
             }
-            else
+            catch (Exception)
             {
-                return " No Note";
+                throw;
+            }
+        }
 
-            }
-        }
         /// <summary>
-        /// A color gets added
+        /// Function for adding note color
         /// </summary>
-        /// <param name="NoteId"></param>
-        /// <param name="addcolor"></param>
+        /// <param name="color"></param>
+        /// <param name="noteid"></param>
         /// <returns></returns>
-        public string Color(long NoteId, string addcolor)
+        public string AddNoteColor(string color, long noteid)
         {
-
-            var color = this.fundoContext.Notestables.Where(c => c.NoteId == NoteId).SingleOrDefault();
-            if (color != null)
+            try
             {
-                if (addcolor != null)
+                if (noteid > 0)
                 {
-                    color.Color = addcolor;
-                    this.fundoContext.Notestables.Update(color);
-                    return this.fundoContext.SaveChanges().ToString();
+                    var note = this.context.Notestables.Where(x => x.NoteId == noteid).SingleOrDefault();
+                    if (note != null)
+                    {
+                        note.Color = color;
+                        note.ModifiedAt = DateTime.Now;
+                        this.context.SaveChangesAsync();
+                        return "Updated";
+                    }
+                    else
+                    {
+                        return "Failed";
+                    }
                 }
-                else
-                {
-                    return null;
-                }
+                return "Failed";
             }
-            throw new Exception();
+            catch (Exception)
+            {
+                throw;
+            }
         }
+
         /// <summary>
-        /// Uploads a Image --Method for uploading image from local host to cloudinary
+        /// Function for removing note color
+        /// </summary>
+        /// <param name="color"></param>
+        /// <param name="noteid"></param>
+        /// <returns></returns>
+        public string RemoveNoteColor(long noteid)
+        {
+            try
+            {
+                if (noteid > 0)
+                {
+                    var note = this.context.Notestables.Where(x => x.NoteId == noteid).SingleOrDefault();
+                    if (note != null)
+                    {
+                        note.Color = "";
+                        note.ModifiedAt = DateTime.Now;
+                        this.context.SaveChangesAsync();
+                        return "Updated";
+                    }
+                    else
+                    {
+                        return "Failed";
+                    }
+                }
+                return "Failed";
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// function for adding a background image for a note
         /// </summary>
         /// <param name="imageURL"></param>
-        /// <param name="NoteId"></param>
+        /// <param name="noteid"></param>
         /// <returns></returns>
-        public bool Image(IFormFile imageURL, long NoteId)// IFormFile-interface that represents transmitted files in an HTTP request.
+        public bool AddNoteBgImage(IFormFile imageURL, long noteid)
         {
             try
             {
-                if (NoteId > 0)
+                if (noteid > 0)
                 {
-                    var note = this.fundoContext.Notestables.Where(x => x.NoteId == NoteId).SingleOrDefault();
+                    var note = this.context.Notestables.Where(x => x.NoteId == noteid).SingleOrDefault();
                     if (note != null)
                     {
                         Account acc = new Account(
-                            //Iconfiguration --_Toolsettings
-                            _Toolsettings["Cloudinary:cloud_name"],//Declare a Cloudinary service
-                            _Toolsettings["Cloudinary:api_key"],
-                            _Toolsettings["Cloudinary:api_secret"]// stored in app.json file
+                            config["Cloudinary:cloud_name"],
+                            config["Cloudinary:api_key"],
+                            config["Cloudinary:api_secret"]
                             );
                         Cloudinary Cld = new Cloudinary(acc);
-                        var path = imageURL.OpenReadStream();//extract the needed information from the URL
-                        ImageUploadParams upLoadParams = new ImageUploadParams()//save an image to cloudinary
+                        var path = imageURL.OpenReadStream();
+                        ImageUploadParams upLoadParams = new ImageUploadParams()
                         {
                             File = new FileDescription(imageURL.FileName, path)
                         };
-                        var UploadResult = Cld.Upload(upLoadParams); //upload to cloudinary 
-                        note.Image = UploadResult.Url.ToString();
+                        var UploadResult = Cld.Upload(upLoadParams);
+                        note.Backgroundcolour = UploadResult.Url.ToString();
                         note.ModifiedAt = DateTime.Now;
-                        this.fundoContext.SaveChanges();
+                        this.context.SaveChangesAsync();
                         return true;
                     }
                     else
@@ -349,27 +370,45 @@ namespace RepositoryLayer.services
                 throw;
             }
         }
+
         /// <summary>
-        /// Delete the uploaded Image
+        /// function to remove a background image from a note
         /// </summary>
-        /// <param name="NoteId"></param>
+        /// <param name="noteid"></param>
         /// <returns></returns>
-        public bool DeleteImage(long NoteId)
+        public bool DeleteNoteBgImage(long noteid)
         {
             try
             {
-                if (NoteId > 0)
+                if (noteid > 0)
                 {
-                    var note = this.fundoContext.Notestables.Where(x => x.NoteId == NoteId).SingleOrDefault();
+                    var note = this.context.Notestables.Where(x => x.NoteId == noteid).SingleOrDefault();
                     if (note != null)
                     {
-                        note.Image = "Please select Image ";
+                        note.Backgroundcolour = "";
                         note.ModifiedAt = DateTime.Now;
-                        this.fundoContext.SaveChanges();
-                        return false;
+                        this.context.SaveChangesAsync();
+                        return true;
                     }
+                    return false;
                 }
                 return false;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// admin function
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Notes> GetEveryonesNotes()
+        {
+            try
+            {
+                return this.context.Notestables.ToList();
             }
             catch (Exception)
             {
