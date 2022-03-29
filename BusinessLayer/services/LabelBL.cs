@@ -28,6 +28,19 @@ namespace BusinessLayer.services
             }
         }
 
+        public bool createlabel(string labelname, long userid)
+        {
+            try
+            {
+                return labelRL.createlabel(labelname, userid);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public string DeleteLabel(long LabelId)
         {
             try

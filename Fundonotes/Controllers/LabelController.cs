@@ -43,13 +43,39 @@ namespace Fundonotes.Controllers
             this.memoryCache = memoryCache;
             this.distributedCache = distributedCache;
         }
+        [HttpPost]
+        [Route("create")]
+        public IActionResult createLabel( string labelname)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                if (labelname == string.Empty)
+                {
+                    return this.NotFound(new { status = 204, sucess = false, message = "label name cannot be empty" });
+                }
+                else
+                {
+                    var result = this.labelBL.createlabel(labelname, userid);
+                    if (result)
+                    {
+                        return this.Ok(new { status = 200, isSuccess = true, Message = "Label created" });
+                    }
+                    return this.BadRequest(new { status = 400, isSuccess = false, Message = "failed" });
+                }
+            }
+            catch (Exception)
+            {
+                return this.BadRequest(new { status = 400, isSuccess = false});
+            }
+        }
         /// <summary>
         /// Creates a label 
         /// </summary>
         /// <param name="labelmodel"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("addlabel")]
+        [Route("Assign")]
         public IActionResult AddLabel( Labelmodel labelmodel) // IActionResult --how the server should respond to the request.
         {
             try

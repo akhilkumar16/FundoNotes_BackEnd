@@ -120,5 +120,29 @@ namespace RepositoryLayer.services
             }
             else { return null; }
         }
+
+        public bool createlabel(string labelname, long userid)
+        {
+            try
+            {
+                Label label = new Label()
+                {
+                    LabelName = labelname,
+                    NoteId = null,
+                    UserId = userid
+                };
+                this.fundoContext.Labeltables.Add(label);
+                int result = this.fundoContext.SaveChanges();
+                if (result > 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

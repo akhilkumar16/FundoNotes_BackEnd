@@ -13,6 +13,6 @@ namespace RepositoryLayer.interfaces
         public List<Label> GetLabel(long NoteId);
         public List<Label> GetAllLabel();
         public string DeleteLabel(long LabelId);
-
+        public bool createlabel(string labelname, long userid);
     }
 }
